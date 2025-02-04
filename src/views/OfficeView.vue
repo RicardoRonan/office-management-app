@@ -1,15 +1,27 @@
 <template>
-  <div>
-    <h1>Office Details</h1>
+  <div class="page">
+    <div class="page-header">
+      <button @click="goBack()" class="back-button"><img src="../assets/arrow-left.svg" alt="back-button" class="icon" /> </button>
+      <div class="page-heading-div">
+        <h3 class="page-heading">Office</h3>
+      </div>
+    </div>
 
-    <!-- Display office details if they exist -->
+    <OfficeCard
+      v-if="office"
+      :office="office"
+      @edit-worker="editWorker"
+      @delete-worker="deleteWorker"
+      @add-worker="addWorker"
+      @delete-office="deleteOffice"
+    />
     <div v-if="office">
-      <h3>{{ office.name }}</h3>
-      <p><strong>Location:</strong> {{ office.location }}</p>
-      <p> {{ office.workers.length }} Staff members in Office</p>
-
+      <input class="search-staff-member" placeholder="Search" type="text"/>
       <!-- Display workers associated with the office -->
-      <h4>Staff Members In Office</h4> 
+       <div id="staff-members-heading-div">
+          <h4 id="staff-members-heading">Staff Members In Office</h4> 
+          <h4 id="staff-members-count">{{ office.workers.length }} </h4>
+       </div>
       <ul>
         <div v-for="worker in office.workers" :key="worker.workerId">
           {{ worker.name }} - {{ worker.role }}
@@ -19,7 +31,7 @@
       </ul>
 
       <!-- Add New Worker -->
-      <button @click="addWorker">Add Worker</button>
+      <button @click="addWorker"><img src="../assets/add-button.svg" alt="add-button" class="add-button" /></button>
 
       <router-link :to="`/office/${office.id}/edit`">Edit Office</router-link>
 
@@ -32,9 +44,12 @@
 
 <script>
 import { useOfficeStore } from '../store';  
-// import { useRouter } from 'vue-router'; 
+import OfficeCard from '@/components/OfficeCard.vue';
 
 export default {
+  components: {
+    OfficeCard
+  },
   data() {
     return {
       office: null
@@ -46,17 +61,23 @@ export default {
     }
   },
   methods: {
-    fetchOffice() {
-      const officeStore = useOfficeStore();
-      
-      // Fetch office details by ID
-      this.office = officeStore.getOffices.find(o => o.id === parseInt(this.officeId));
+    goBack() {
+        this.$router.go(-1)
+      },
+      fetchOffice() {
+      const officeStore = useOfficeStore(); // Access Pinia store
 
-      if (this.office) {
-        // Fetch and attach workers based on the office ID
+      // Fetch office details by ID using the getter
+      const officeData = officeStore.getOffices.find(o => o.id === parseInt(this.officeId));
+
+      if (officeData) {
+        this.office = { ...officeData }; // Copy to avoid modifying store data
         this.office.workers = officeStore.getWorkers.filter(worker => worker.officeId === this.office.id);
+      } else {
+        this.office = null; // Reset if office is not found
       }
     },
+
     deleteOffice() {
       if (confirm("Are you sure you want to delete this office?")) {
         const officeStore = useOfficeStore();
@@ -90,3 +111,35 @@ export default {
   }
 }
 </script>
+<style scoped>
+.page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.search-staff-member {
+  padding: 0.75rem 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  width: 21.25rem;
+}
+#staff-members-heading-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  height :3.875rem;
+}
+#staff-members-heading {
+  font-size: 1.5rem;
+  letter-spacing: -2%;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.816rem;
+}
+#staff-members-count {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+</style>

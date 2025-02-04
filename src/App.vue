@@ -13,12 +13,32 @@ export default {
 </script>
 
 <style>
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
 :root {
   --text-font-color: #484954; /* Dark Grayish Blue */
   --action-button-color: #0d4477; /* Dark Cerulean */
   --delete-button-color: #f44336; /* Red */
   --accent-color: #489dda; /* Steel Blue */
-
+  --bg-color:#F8FAFC;
   /* Office Colors */
   --color-1-sunglow: #ffbe0b;
   --color-2-coral-orange: #ff9b71;
@@ -34,6 +54,7 @@ export default {
 }
 
 body {
+  height: 100vh;
 font-family: "Poppins", serif;
 font-weight: 400;
 font-style: normal;
@@ -42,12 +63,35 @@ justify-content: center;
 padding: 0;
 margin: 0;
 color: var(--text-font-color);
+background-color: var(--bg-color);
+}
+button{
+  background-color: white;
+  border: none;
+}
+.back-button{
+background-color :var(--bg-color);
+}
+.home-heading-div {
+  padding:1rem;
+}
+.home-heading{
+  font-size: 1.75rem;
+  line-height: 2.118rem;
+  font-weight: 600;
+  letter-spacing: -2%;
 }
 .heading{
   font-size:1.5rem;
+  font-weight: 800;
+  line-height: 1.816rem;
+  letter-spacing: -2%;
+  padding: 1.088rem 0rem 0rem 0rem;
 }
 .body-text{
   font-size:0.75rem;
+  line-height:1.375rem ;
+  font-weight: 400;
 }
 #app{
   padding:1rem;
@@ -55,5 +99,11 @@ color: var(--text-font-color);
 .icon{
   width:1.5rem;
   height: 1.5rem;
+}
+.add-button{
+  position: fixed;
+  right: 1.063rem;
+  bottom: 1.5rem;
+  left: 18.375rem;
 }
 </style>

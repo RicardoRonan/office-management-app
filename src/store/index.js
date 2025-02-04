@@ -1,49 +1,59 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
+import astronautPeace from '@/assets/staff-avatar/astronaut-peace-emote.svg';
+import astronautSuper from '@/assets/staff-avatar/astronaut-super.svg';
+import astronautRocket from '@/assets/staff-avatar/astronaut-sitting-on-rocket.svg';
+import astronautBadBoy from '@/assets/staff-avatar/astronaut-bad-boy.svg';
+import astronautJupiter from '@/assets/staff-avatar/astronaut-holding-jupiter.svg';
+import astronautMoon from '@/assets/staff-avatar/astronaut-hanging-on-moon.svg';
+import astronautBalloons from '@/assets/staff-avatar/astronaut-balloons.svg';
 
-export const useOfficeStore = defineStore('officeStore', {
+export const useOfficeStore = defineStore("officeStore", {
   state: () => ({
     offices: [
       {
-        "id": 1,
-        "OfficeName": "Specno",
-        "PhysicalAddress": "test place",
-        "EmailAddress": "",
-        "PhoneNumber": "",
+        id: 1,
+        OfficeName: "Specno",
+        PhysicalAddress: "test place",
+        EmailAddress: "",
+        PhoneNumber: "",
         "Maximum Capacity": "",
-        "OfficeColor": "#FF5733"  // Example default color
+        OfficeColor: "#FF5733", // Example default color
       },
       {
-        "id": 2,
-        "OfficeName": "Company Name",
-        "PhysicalAddress": "test place 2",
-        "EmailAddress": "",
-        "PhoneNumber": "",
+        id: 2,
+        OfficeName: "Company Name",
+        PhysicalAddress: "test place 2",
+        EmailAddress: "",
+        PhoneNumber: "",
         "Maximum Capacity": "",
-        "OfficeColor": "#33FF57"  // Example default color
-      }
+        OfficeColor: "#33FF57", // Example default color
+      },
     ],
     workers: [
       {
-        "workerId": 1,
-        "officeId": 1,
-        "FirstName": "Ricardo",
-        "LastName": "Moses"
+        workerId: 1,
+        officeId: 1,
+        FirstName: "Ricardo",
+        LastName: "Moses",
+        Avatar: "",
       },
       {
-        "workerId": 2,
-        "officeId": 2,
-        "FirstName": "Joshua",
-        "LastName": "Huckleberry"
+        workerId: 2,
+        officeId: 2,
+        FirstName: "Joshua",
+        LastName: "Huckleberry",
+        Avatar: "",
       },
       {
-        "workerId": 3,
-        "officeId": 2,
-        "FirstName": "John",
-        "LastName": "Doughnuts"
-      }
+        workerId: 3,
+        officeId: 2,
+        FirstName: "John",
+        LastName: "Doughnuts",
+        Avatar: "",
+      },
     ],
-    
-    availableColors: [  // List of colors with names
+
+    availableColors: [
       { name: "Sunglow", hex: "#ffbe0b" },
       { name: "Coral Orange", hex: "#ff9b71" },
       { name: "Orange Red", hex: "#fb5607" },
@@ -54,86 +64,124 @@ export const useOfficeStore = defineStore('officeStore', {
       { name: "Islamic Green", hex: "#00b402" },
       { name: "Steel Blue", hex: "#489dda" },
       { name: "Bright Navy Blue", hex: "#0072e8" },
-      { name: "Electric Purple", hex: "#8338ec" }
+      { name: "Electric Purple", hex: "#8338ec" },
+    ],
+    availableAvatars: [
+      astronautPeace.toString(),  
+      astronautSuper.toString(),
+      astronautRocket.toString(),
+      astronautBadBoy.toString(),
+      astronautJupiter.toString(),
+      astronautMoon.toString(),
+      astronautBalloons.toString()
     ]
   }),
 
   getters: {
-    getOffices: (state) => state.offices,
+    getOffices: (state) => {
+      return state.offices.map((office) => {
+        office.workers = state.workers.filter(
+          (worker) => worker.officeId === office.id
+        );
+        return office;
+      });
+    },
     getWorkers: (state) => state.workers,
-    getAvailableColors: (state) => state.availableColors // Getter for colors
+    getAvailableColors: (state) => state.availableColors, // Getter for colors
   },
 
   actions: {
-    // Add Office
+    //#region ADD OFFICE
     addOffice(office) {
-      const newId = this.offices.length ? Math.max(...this.offices.map(o => o.id)) + 1 : 1;
+      const newId = this.offices.length
+        ? Math.max(...this.offices.map((o) => o.id)) + 1
+        : 1;
       office.id = newId;
 
-      // Ensure OfficeColor is valid
-      if (!this.availableColors.some(c => c.hex === office.OfficeColor)) {
-        office.OfficeColor = this.availableColors[0].hex; // Default to the first color
+      if (!this.availableColors.some((c) => c.hex === office.OfficeColor)) {
+        office.OfficeColor = this.availableColors[0].hex;
       }
 
       this.offices.push(office);
       this.saveState();
     },
-    
-    // Edit Office
+    //#endregion
+
+    //#region EDIT OFFICE
     editOffice(updatedOffice) {
-      const index = this.offices.findIndex(office => office.id === updatedOffice.id);
+      const index = this.offices.findIndex(
+        (office) => office.id === updatedOffice.id
+      );
       if (index !== -1) {
-        // Ensure the OfficeColor is valid
-        if (!this.availableColors.some(c => c.hex === updatedOffice.OfficeColor)) {
-          updatedOffice.OfficeColor = this.availableColors[0].hex; // Default color
+        if (
+          !this.availableColors.some((c) => c.hex === updatedOffice.OfficeColor)
+        ) {
+          updatedOffice.OfficeColor = this.availableColors[0].hex;
         }
 
         this.offices.splice(index, 1, updatedOffice);
         this.saveState();
       }
     },
+    //#endregion
 
-    // Delete Office
+    //#region DELETE OFFICE
     deleteOffice(officeId) {
-      this.offices = this.offices.filter(office => office.id !== officeId);
+      this.offices = this.offices.filter((office) => office.id !== officeId);
       this.saveState();
     },
- // Add Worker
- addWorker(worker) {
-  this.workers.push(worker);
-  this.saveState();  // Save updated state
-},
-// Edit Worker
-editWorker(updatedWorker) {
-  const index = this.workers.findIndex(worker => worker.workerId === updatedWorker.workerId);
-  if (index !== -1) {
-    // Ensure reactivity by directly modifying the array
-    this.workers.splice(index, 1, updatedWorker);
-  this.saveState();  // Save updated state
+    //#endregion
 
-  }
-},
-deleteWorker(workerId) {
-  const index = this.workers.findIndex(worker => worker.workerId === workerId);
-  if (index !== -1) {
-    this.workers.splice(index, 1);  // Remove the worker from the array
-    
-    this.saveState();  // Optional, if you want to persist changes
-  }
-},
+    //#region ADD WORKER
+    addWorker(worker) {
+      if (!worker.Avatar) {
+        worker.Avatar = this.availableAvatars[0]; 
+      }
+      this.workers.push(worker);
+      this.saveState();
+    },
+    //#endregion
+
+    //#region EDIT WORKER
+    editWorker(updatedWorker) {
+      const index = this.workers.findIndex(
+        (worker) => worker.workerId === updatedWorker.workerId
+      );
+      if (index !== -1) {
+        if (!updatedWorker.Avatar) {
+          updatedWorker.Avatar = this.availableAvatars[0];  
+        }
+        this.workers.splice(index, 1, updatedWorker);
+        this.saveState();
+      }
+    },
+    //#endregion
+
+    //#region DE:ETE WORKER
+    deleteWorker(workerId) {
+      const index = this.workers.findIndex(
+        (worker) => worker.workerId === workerId
+      );
+      if (index !== -1) {
+        this.workers.splice(index, 1);
+
+        this.saveState();
+      }
+    },
+    //#endregion
 
     // Save state to localStorage
     saveState() {
-      localStorage.setItem('offices', JSON.stringify(this.offices));
-      localStorage.setItem('workers', JSON.stringify(this.workers));
+      localStorage.setItem("offices", JSON.stringify(this.offices));
+      localStorage.setItem("workers", JSON.stringify(this.workers));
     },
 
     // Load state from localStorage
     loadState() {
-      const offices = JSON.parse(localStorage.getItem('offices')) || [];
-      const workers = JSON.parse(localStorage.getItem('workers')) || [];
+      const offices = JSON.parse(localStorage.getItem("offices")) || [];
+      const workers = JSON.parse(localStorage.getItem("workers")) || [];
       this.offices = offices;
       this.workers = workers;
-    }
-  }
+    },
+  },
 });

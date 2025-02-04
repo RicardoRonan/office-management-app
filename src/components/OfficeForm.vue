@@ -64,7 +64,7 @@ export default {
     
     getOfficeById(id) {
       const officeStore = useOfficeStore();
-      const office = officeStore.getOffices.find(office => office.id == id) || {};
+      const office = officeStore.getOffices().find(office => office.id == id) || {};
       
       return {
         id: office.id || null,

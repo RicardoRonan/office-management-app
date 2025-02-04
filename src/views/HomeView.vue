@@ -1,22 +1,47 @@
 <template>
-  <div>
+  <div class="page">
+    <div class="home-heading-div">
+      <h2 class="home-heading">All Offices</h2>
+    </div>
+    <OfficeCard
+      v-for="office in offices"
+      :key="office.id"
+      :office="office"
+      @edit-worker="editWorker"
+      @delete-worker="deleteWorker"
+      @add-worker="addWorker"
+      @delete-office="deleteOffice"
+      @click="viewOffice(office)"
+    />
 
-    <OfficeList />
-
-    <router-link to="/office/new">Add New Office</router-link>
+    <router-link to="/office/new"><img src="../assets/add-button.svg" alt="add-button" class="add-button" /></router-link>
   </div>
 </template>
 <script>
-import OfficeList from '../components/OfficeList.vue'
+import OfficeCard from '../components/OfficeCard.vue'
 import { useOfficeStore } from '../store';  // Import Pinia store
 
 export default {
   components: {
-    OfficeList
+    OfficeCard
   },
+  computed: {
+  offices() {
+    const officeStore = useOfficeStore();
+    return officeStore.getOffices;
+  }
+},
   mounted() {
     const officeStore = useOfficeStore(); 
-    officeStore.loadState();  // Load the state once the component is mounted
+    officeStore.loadState(); 
+  },
+  methods:{
+    viewOffice(office) {
+      this.$router.push({ name: "office", params: { id: office.id } });
+    },
   }
 }
 </script>
+<style scoped>
+
+</style>
