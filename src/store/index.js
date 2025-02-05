@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-import astronautPeace from '@/assets/staff-avatar/astronaut-peace-emote.svg';
-import astronautSuper from '@/assets/staff-avatar/astronaut-super.svg';
-import astronautRocket from '@/assets/staff-avatar/astronaut-sitting-on-rocket.svg';
-import astronautBadBoy from '@/assets/staff-avatar/astronaut-bad-boy.svg';
-import astronautJupiter from '@/assets/staff-avatar/astronaut-holding-jupiter.svg';
-import astronautMoon from '@/assets/staff-avatar/astronaut-hanging-on-moon.svg';
-import astronautBalloons from '@/assets/staff-avatar/astronaut-balloons.svg';
+import astronautPeace from "@/assets/staff-avatar/astronaut-peace-emote.svg";
+import astronautSuper from "@/assets/staff-avatar/astronaut-super.svg";
+import astronautRocket from "@/assets/staff-avatar/astronaut-sitting-on-rocket.svg";
+import astronautBadBoy from "@/assets/staff-avatar/astronaut-bad-boy.svg";
+import astronautJupiter from "@/assets/staff-avatar/astronaut-holding-jupiter.svg";
+import astronautMoon from "@/assets/staff-avatar/astronaut-hanging-on-moon.svg";
+import astronautBalloons from "@/assets/staff-avatar/astronaut-balloons.svg";
 
 export const useOfficeStore = defineStore("officeStore", {
   state: () => ({
@@ -14,19 +14,19 @@ export const useOfficeStore = defineStore("officeStore", {
         id: 1,
         OfficeName: "Specno",
         PhysicalAddress: "test place",
-        EmailAddress: "",
-        PhoneNumber: "",
-        "Maximum Capacity": "",
-        OfficeColor: "#FF5733", // Example default color
+        EmailAddress: "info@specno.com",
+        PhoneNumber: "082 364 9864",
+        MaximumCapacity: "25",
+        OfficeColor: "",
       },
       {
         id: 2,
         OfficeName: "Company Name",
         PhysicalAddress: "test place 2",
-        EmailAddress: "",
-        PhoneNumber: "",
-        "Maximum Capacity": "",
-        OfficeColor: "#33FF57", // Example default color
+        EmailAddress: "info@companyname",
+        PhoneNumber: "0745162365",
+        MaximumCapacity: "25",
+        OfficeColor: "",
       },
     ],
     workers: [
@@ -67,23 +67,26 @@ export const useOfficeStore = defineStore("officeStore", {
       { name: "Electric Purple", hex: "#8338ec" },
     ],
     availableAvatars: [
-      astronautPeace.toString(),  
+      astronautPeace.toString(),
       astronautSuper.toString(),
       astronautRocket.toString(),
       astronautBadBoy.toString(),
       astronautJupiter.toString(),
       astronautMoon.toString(),
-      astronautBalloons.toString()
-    ]
+      astronautBalloons.toString(),
+    ],
   }),
 
   getters: {
     getOffices: (state) => {
       return state.offices.map((office) => {
-        office.workers = state.workers.filter(
+        const workersForOffice = state.workers.filter(
           (worker) => worker.officeId === office.id
         );
-        return office;
+        return {
+          ...office,
+          workers: workersForOffice,
+        };
       });
     },
     getWorkers: (state) => state.workers,
@@ -135,7 +138,7 @@ export const useOfficeStore = defineStore("officeStore", {
     //#region ADD WORKER
     addWorker(worker) {
       if (!worker.Avatar) {
-        worker.Avatar = this.availableAvatars[0]; 
+        worker.Avatar = this.availableAvatars[0];
       }
       this.workers.push(worker);
       this.saveState();
@@ -149,7 +152,7 @@ export const useOfficeStore = defineStore("officeStore", {
       );
       if (index !== -1) {
         if (!updatedWorker.Avatar) {
-          updatedWorker.Avatar = this.availableAvatars[0];  
+          updatedWorker.Avatar = this.availableAvatars[0];
         }
         this.workers.splice(index, 1, updatedWorker);
         this.saveState();

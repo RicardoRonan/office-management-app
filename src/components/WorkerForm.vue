@@ -80,7 +80,7 @@ export default {
 
     getMaxWorkerId() {
       const officeStore = useOfficeStore(); // Get store to access workers
-      return Math.max(...officeStore.getWorkers().map((worker) => worker.workerId), 0);
+      return Math.max(...officeStore.getWorkers.map((worker) => worker.workerId), 0);
     },
     selectAvatar(avatar) {
     this.worker.Avatar = avatar; 
@@ -89,7 +89,7 @@ export default {
   created() {
     if (this.isEdit) {
       const officeStore = useOfficeStore();
-      const workerToEdit = officeStore.getWorkers().find(
+      const workerToEdit = officeStore.getWorkers.find(
   (worker) => worker.workerId === parseInt(this.workerId)
 );
 

@@ -40,7 +40,7 @@ export default {
         EmailAddress: '',
         PhoneNumber: '',
         MaximumCapacity: '',
-        OfficeColor: '#FF5733',  // Default color
+        OfficeColor: '',  // Default color
       },
       availableColors: useOfficeStore().getAvailableColors // Access available colors from the store
     };
@@ -64,7 +64,7 @@ export default {
     
     getOfficeById(id) {
       const officeStore = useOfficeStore();
-      const office = officeStore.getOffices().find(office => office.id == id) || {};
+      const office = officeStore.getOffices.find(office => office.id == id) || {};
       
       return {
         id: office.id || null,
@@ -73,7 +73,7 @@ export default {
         EmailAddress: office.EmailAddress || '',
         PhoneNumber: office.PhoneNumber || '',
         MaximumCapacity: office.MaximumCapacity || '',
-        OfficeColor: office.OfficeColor || '#FF5733'  // Ensure we retrieve the color too
+        OfficeColor: office.OfficeColor  // Ensure we retrieve the color too
       };
     }
   }
