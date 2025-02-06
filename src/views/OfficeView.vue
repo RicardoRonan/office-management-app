@@ -18,8 +18,12 @@
       @delete-office="deleteOffice"
     />
     <div v-if="office">
-      <div class="search-staff-member-div">
-        <input class="search-staff-member" placeholder="Search" type="text" />
+      <div class="input-div">
+      <input   id="search-staff-member"
+      class="input"
+      v-model="searchQuery"
+      placeholder="Search"
+      type="text"/>
       </div>
       <!-- Display workers associated with the office -->
       <div id="staff-members-heading-div">
@@ -28,39 +32,57 @@
       </div>
       <ul>
         <div
-          v-for="worker in office.workers"
+          v-for="worker in filteredWorkers"
           :key="worker.workerId"
           class="worker-div"
         >
           <div class="worker-details">
-            <img v-bind:src="worker.Avatar" alt="avatar" />
+            <BaseModal :show="showFirstModal" @close="showFirstModal = false">
+              <div class="buttons-div">
+                <button class="primary-button" @click="openWorkerEditModal(worker.workerId)">
+                  EDIT STAFF MEMBER
+                </button>
+                <button class="secondary-button" @click="deleteWorker(worker.workerId)">
+                  DELETE STAFF MEMBER
+                </button>
+              </div>
+            </BaseModal>
+            <img :src="worker.Avatar" alt="avatar" />
             <p class="worker-name">
               {{ worker.FirstName }} {{ worker.LastName }}
             </p>
           </div>
           <div class="worker-menu">
-            <img src="../assets/3-dots.svg" class="icon" alt="3-dot-menu" />
+            <img
+              @click="showFirstModal = true"
+              src="../assets/3-dots.svg"
+              class="icon"
+              alt="3-dot-menu"
+            />
           </div>
         </div>
-        <div class="menu-pop-up">
-
-          <button @click="editWorker(office.worker)">Edit</button>
-          <button @click="deleteWorker(office.worker.workerId)">Delete</button>
-        </div>
       </ul>
-
+      <WorkerForm
+      :officeId="officeId"
+      :workerId= "workerId"
+      @add-worker="addWorker"
+      @edit-worker="editWorker"
+      :show="showSecondModal" 
+      @close="showSecondModal = false" 
+    />
       <!-- Add New Worker -->
       <button @click="addWorker">
         <img
           src="../assets/add-button.svg"
           alt="add-button"
           class="add-button"
+          @click="showSecondModal = true"
         />
       </button>
 
       <!-- <router-link :to="`/office/${office.id}/edit`">Edit Office</router-link> -->
 
-      <!-- <button @click="deleteOffice">Delete Office</button> -->
+   
     </div>
 
     <p v-else>Loading...</p>
@@ -69,26 +91,43 @@
 
 <script>
 import { useOfficeStore } from "../store";
+import BaseModal from "@/components/BaseModal.vue";
 import OfficeCard from "@/components/OfficeCard.vue";
+import WorkerForm from "@/components/WorkerForm.vue";
 
 export default {
   components: {
     OfficeCard,
+    BaseModal,
+    WorkerForm
   },
   data() {
     return {
+      searchQuery: "",
       office: null,
+      showFirstModal: false,
+      showSecondModal: false,
+      workerId: this.workerId,
+      
     };
   },
   computed: {
     officeId() {
       return this.$route.params.id;
     },
+    filteredWorkers() {
+      const query = this.searchQuery.toLowerCase();
+      return this.office.workers.filter((worker) => {
+        const fullName = `${worker.FirstName} ${worker.LastName}`.toLowerCase();
+        return fullName.includes(query);
+      });
+    },
   },
   methods: {
     goBack() {
       this.$router.go(-1);
     },
+
     fetchOffice() {
       const officeStore = useOfficeStore();
 
@@ -106,32 +145,21 @@ export default {
       }
     },
 
-    deleteOffice() {
-      if (confirm("Are you sure you want to delete this office?")) {
-        const officeStore = useOfficeStore();
-        officeStore.deleteOffice(this.office.id);
-        this.$router.push("/");
-      }
-    },
-    addWorker() {
-      // Redirect to worker form for adding a new worker (assuming you have a worker form page)
-      this.$router.push({
-        name: "addWorker",
-        params: { officeId: this.office.id },
-      });
-    },
     editWorker(worker) {
-      this.$router.push({
-        name: "editWorker",
-        params: { workerId: worker.workerId, officeId: this.office.id },
-      });
+    const officeStore = useOfficeStore();
+    officeStore.editWorker(worker);
+    this.fetchOffice(); // Refresh the office data
     },
     deleteWorker(workerId) {
       if (confirm("Are you sure you want to delete this worker?")) {
         const officeStore = useOfficeStore();
         officeStore.deleteWorker(workerId);
         this.fetchOffice();
-      } // Re-fetch the office data to update the UI after deleting a worker
+      } 
+    },
+    openWorkerEditModal(workerId) {
+      this.workerId = workerId;
+      this.showSecondModal = true;
     },
   },
   watch: {
@@ -143,29 +171,7 @@ export default {
 };
 </script>
 <style scoped>
-.page-header {
-height: 1.563rem;
-display: flex;
-flex-direction: row;
-gap: 4.188rem;
-align-items: center;
-width: 23.438rem;
-padding: 0rem 0rem 1.438rem 1rem;
-}
-.page-heading-div {
-width: 9.563rem;
-}
-.page-heading{
-  font-size: 1.125rem;
-  line-height:1.361rem ;
- letter-spacing: -2%;
-text-align:center;
-}
-.page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 .search-staff-member-div {
   display: flex;
   justify-content: center;
@@ -174,17 +180,13 @@ text-align:center;
   padding: 0.75rem 0.5rem;
   border: none;
   border-radius: 0.5rem;
-  width: 21.25rem;
+
 }
 #staff-members-heading-div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: 3.875rem;
-  padding: 1rem 1rem 1rem 0rem;
-  width: 23.438rem;
-  height: 3.875rem;
+width: 23.438rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 #staff-members-heading {
   font-size: 1.5rem;

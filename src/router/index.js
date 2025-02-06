@@ -32,7 +32,7 @@ const routes = [
     path: '/office/:officeId/worker/:workerId/edit',
     name: 'editWorker',
     component: WorkerForm,
-    props: true // Ensure that params are passed as props
+    props: true
   },
   {
     path: '/office/:id/edit',

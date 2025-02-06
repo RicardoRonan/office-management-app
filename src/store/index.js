@@ -89,7 +89,9 @@ export const useOfficeStore = defineStore("officeStore", {
         };
       });
     },
-    getWorkers: (state) => state.workers,
+    getWorkers: (state) => {
+      return state.workers 
+    },
     getAvailableColors: (state) => state.availableColors, // Getter for colors
   },
 
@@ -100,16 +102,21 @@ export const useOfficeStore = defineStore("officeStore", {
         ? Math.max(...this.offices.map((o) => o.id)) + 1
         : 1;
       office.id = newId;
-
-      if (!this.availableColors.some((c) => c.hex === office.OfficeColor)) {
-        office.OfficeColor = this.availableColors[0].hex;
+    
+      if (!office.OfficeColor || !this.availableColors.some((c) => c.hex === office.OfficeColor)) {
+        const randomColor = this.getRandomColor();
+        office.OfficeColor = randomColor;
       }
-
+    
       this.offices.push(office);
       this.saveState();
     },
+    
     //#endregion
-
+    getRandomColor() {
+      const randomIndex = Math.floor(Math.random() * this.availableColors.length);
+      return this.availableColors[randomIndex].hex;
+    },
     //#region EDIT OFFICE
     editOffice(updatedOffice) {
       const index = this.offices.findIndex(
@@ -117,9 +124,10 @@ export const useOfficeStore = defineStore("officeStore", {
       );
       if (index !== -1) {
         if (
+          !updatedOffice.OfficeColor ||
           !this.availableColors.some((c) => c.hex === updatedOffice.OfficeColor)
         ) {
-          updatedOffice.OfficeColor = this.availableColors[0].hex;
+          updatedOffice.OfficeColor = this.getRandomColor();
         }
 
         this.offices.splice(index, 1, updatedOffice);
@@ -160,7 +168,7 @@ export const useOfficeStore = defineStore("officeStore", {
     },
     //#endregion
 
-    //#region DE:ETE WORKER
+    //#region DElETE WORKER
     deleteWorker(workerId) {
       const index = this.workers.findIndex(
         (worker) => worker.workerId === workerId

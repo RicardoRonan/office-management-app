@@ -71,14 +71,14 @@ export default {
     };
   },
   methods: {
-    // getOffices: (state) => {
-    //   return state.offices.map((office) => ({
-    //     ...office, 
-    //     workers: state.workers.filter(
-    //       (worker) => worker.officeId === office.id
-    //     ), 
-    //   }));
-    // },
+    getOffices: (state) => {
+      return state.offices.map((office) => ({
+        ...office, 
+        workers: state.workers.filter(
+          (worker) => worker.officeId === office.id
+        ), 
+      }));
+    },
     deleteOffice(officeId) {
       if (confirm("Are you sure you want to delete this office?")) {
         const officeStore = useOfficeStore();
@@ -117,7 +117,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1rem;
+  margin: 1.5rem;
 }
 .heading-div {
   display: flex;
