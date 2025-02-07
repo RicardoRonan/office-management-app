@@ -89,9 +89,9 @@ export default {
     toggleAccordion(officeId) {
       const index = this.openAccordions.indexOf(officeId);
       if (index === -1) {
-        this.openAccordions.push(officeId); // Open this accordion
+        this.openAccordions.push(officeId); 
       } else {
-        this.openAccordions.splice(index, 1); // Close this accordion
+        this.openAccordions.splice(index, 1); 
       }
     },
 

@@ -14,35 +14,47 @@
         class="input"
         v-model="office.OfficeName"
         placeholder="Office Name"
+        type="text"
+        required
       />
       <input
         class="input"
         v-model="office.PhysicalAddress"
+        type="text"
         placeholder="Physical Address"
       />
       <input
         class="input"
         v-model="office.EmailAddress"
         placeholder="Email Address"
+        type="email"
       />
       <input
         class="input"
         v-model="office.PhoneNumber"
         placeholder="Phone Number"
+        type="text"
+        required
       />
       <input
         class="input"
         v-model="office.MaximumCapacity"
         placeholder="Maximum Capacity"
+        type="number"
+        min="1"
+        max="25"
+        required
       />
       <!-- Color selection dropdown -->
-      <label for="office-color" class="sub-heading" id="office-color-heading">Office Color</label>
+      <label for="office-color" class="sub-heading" id="office-color-heading"
+        >Office Color</label
+      >
       <div id="color-div">
         <div
           v-for="color in availableColors"
-          :key="color"
+          :key="color.hex"
           :style="{ backgroundColor: color.hex }"
-          :class="{ selected: office.OfficeColor.hex === color.hex }"
+          :class="{ selected: office.OfficeColor === color.hex }"
           @click="selectColor(color)"
           class="color-option"
         ></div>
@@ -51,7 +63,13 @@
         <button class="primary-button" type="submit">
           {{ isEdit ? "UPDATE" : "ADD" }} OFFICE
         </button>
-           <button class="secondary-button" id="delete-office" @click="deleteOffice">Delete Office</button>
+        <button
+          class="secondary-button"
+          id="delete-office"
+          @click="deleteOffice"
+        >
+          Delete Office
+        </button>
       </div>
     </form>
   </div>
@@ -124,7 +142,6 @@ export default {
         this.$router.push("/");
       }
     },
-
     selectColor(color) {
       this.office.OfficeColor = color;
     },
@@ -154,10 +171,10 @@ export default {
   border: 0.15rem solid var(--text-font-color);
   border-radius: 50%;
 }
-#office-color-heading{
-  font-weight :600
+#office-color-heading {
+  font-weight: 600;
 }
-#delete-office{
-margin:0.75rem 0rem 0rem 0rem;
+#delete-office {
+  margin: 0.75rem 0rem 0rem 0rem;
 }
 </style>

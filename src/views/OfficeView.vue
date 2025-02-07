@@ -17,15 +17,16 @@
       @add-worker="addWorker"
       @delete-office="deleteOffice"
     />
-    <div v-if="office">
-      <div class="input-div">
-      <input   id="search-staff-member"
-      class="input"
-      v-model="searchQuery"
-      placeholder="Search"
-      type="text"/>
+    <div v-if="office" id="office">
+      <div class="input-div" id="search-staff-member-div">
+        <input
+          id="search-staff-member"
+          class="input"
+          v-model="searchQuery"
+          placeholder="Search"
+          type="text"
+        />
       </div>
-      <!-- Display workers associated with the office -->
       <div id="staff-members-heading-div">
         <h4 id="staff-members-heading">Staff Members In Office</h4>
         <h4 id="staff-members-count">{{ office.workers.length }}</h4>
@@ -39,10 +40,16 @@
           <div class="worker-details">
             <BaseModal :show="showFirstModal" @close="showFirstModal = false">
               <div class="buttons-div">
-                <button class="primary-button" @click="openWorkerEditModal(worker.workerId)">
+                <button
+                  class="primary-button"
+                  @click="openWorkerEditModal(worker.workerId)"
+                >
                   EDIT STAFF MEMBER
                 </button>
-                <button class="secondary-button" @click="deleteWorker(worker.workerId)">
+                <button
+                  class="secondary-button"
+                  @click="deleteWorker(worker.workerId)"
+                >
                   DELETE STAFF MEMBER
                 </button>
               </div>
@@ -63,26 +70,21 @@
         </div>
       </ul>
       <WorkerForm
-      :officeId="officeId"
-      :workerId= "workerId"
-      @add-worker="addWorker"
-      @edit-worker="editWorker"
-      :show="showSecondModal" 
-      @close="showSecondModal = false" 
-    />
-      <!-- Add New Worker -->
+        :officeId="officeId"
+        :workerId="workerId"
+        @edit-worker="editWorker"
+        :show="showSecondModal"
+        @close="showSecondModal = false"
+      />
+
       <button @click="addWorker">
         <img
           src="../assets/add-button.svg"
           alt="add-button"
           class="add-button"
-          @click="showSecondModal = true"
         />
       </button>
 
-      <!-- <router-link :to="`/office/${office.id}/edit`">Edit Office</router-link> -->
-
-   
     </div>
 
     <p v-else>Loading...</p>
@@ -99,7 +101,7 @@ export default {
   components: {
     OfficeCard,
     BaseModal,
-    WorkerForm
+    WorkerForm,
   },
   data() {
     return {
@@ -108,7 +110,6 @@ export default {
       showFirstModal: false,
       showSecondModal: false,
       workerId: this.workerId,
-      
     };
   },
   computed: {
@@ -144,18 +145,21 @@ export default {
         this.office = null;
       }
     },
-
+    addWorker() {
+      this.workerId = null; 
+      this.showSecondModal = true;
+    },
     editWorker(worker) {
-    const officeStore = useOfficeStore();
-    officeStore.editWorker(worker);
-    this.fetchOffice(); // Refresh the office data
+      const officeStore = useOfficeStore();
+      officeStore.editWorker(worker);
+      this.fetchOffice(); 
     },
     deleteWorker(workerId) {
       if (confirm("Are you sure you want to delete this worker?")) {
         const officeStore = useOfficeStore();
         officeStore.deleteWorker(workerId);
         this.fetchOffice();
-      } 
+      }
     },
     openWorkerEditModal(workerId) {
       this.workerId = workerId;
@@ -171,22 +175,47 @@ export default {
 };
 </script>
 <style scoped>
-
-.search-staff-member-div {
+#office{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.input-icon {
+  position: absolute;
+  right: 1rem; 
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none; 
+}
+#search-staff-member-div {
   display: flex;
   justify-content: center;
+  border: 0.063rem solid #e8f3fc;
+  border-radius: 0.5rem;
+  width: 21.25rem;
 }
 .search-staff-member {
   padding: 0.75rem 0.5rem;
   border: none;
   border-radius: 0.5rem;
-
+}
+.search-staff-member::placeholder{
+  font-size:0.75rem;
+  line-height:1.375rem ;
+  font-weight: 400;
+  letter-spacing: 0%;
 }
 #staff-members-heading-div {
-width: 23.438rem;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  width: 23.438rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 #staff-members-heading {
   font-size: 1.5rem;
