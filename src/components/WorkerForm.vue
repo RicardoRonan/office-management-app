@@ -48,7 +48,9 @@
               @click="setStep(2)"
             ></div>
           </div>
-          <button class="primary-button" @click="nextStep">Next</button>
+          <div class="modal-button-div">
+            <button class="primary-button" @click="nextStep">Next</button>
+          </div>
         </div>
 
         <div v-if="currentStep === 2">
@@ -75,9 +77,11 @@
               @click="setStep(2)"
             ></div>
           </div>
-          <button class="primary-button" type="submit">
-            {{ isEdit ? "Update Staff Member" : "Add Staff Member" }}
-          </button>
+          <div class="modal-button-div">
+            <button class="primary-button" type="submit">
+              {{ isEdit ? "Update Staff Member" : "Add Staff Member" }}
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -93,18 +97,18 @@ export default {
   props: {
     workerId: { type: [String, Number], default: null },
     show: { type: Boolean, required: true },
-    officeId: { type: [String, Number], required: true },
+    officeId: { type:  [Number], required: true },
   },
   data() {
     return {
       currentStep: 1,
-      worker: this.initializeWorker(),
+      worker: null,
       officeStore: useOfficeStore(),
     };
   },
   computed: {
     isEdit() {
-      return !!this.workerId;
+      return this.workerId !== null && this.workerId !== "";
     },
     availableAvatars() {
       return this.officeStore.availableAvatars;
@@ -118,22 +122,24 @@ export default {
   },
   methods: {
     loadWorker() {
-      if (this.isEdit) {
-        const existingWorker = this.officeStore.getWorkerById(this.workerId);
-        if (existingWorker) {
-          this.worker = JSON.parse(JSON.stringify(existingWorker));
-        } else {
-          this.worker = this.initializeWorker();
-        }
+      console.log("Looking for office with ID:", this.officeId);
+      console.log("Looking for worker with ID:", this.workerId);
+      if (this.isEdit && this.workerId) {
+      const existingWorker = this.officeStore.workers.find(
+        worker => worker.workerId === Number(this.workerId) && worker.officeId === Number(this.officeId)
+      );
+      console.log("Worker found:", existingWorker);
+      this.worker = existingWorker
+        ? { ...existingWorker }
+        : this.initializeWorker();
       } else {
-        this.worker = this.initializeWorker();
+      this.worker = this.initializeWorker();
       }
     },
-
     initializeWorker() {
       return {
-        workerId: "",
-        officeId: parseInt(this.officeId),
+        workerId: null,
+        officeId: parseInt(this.officeId, 10),
         FirstName: "",
         LastName: "",
         Avatar: "",
@@ -155,12 +161,15 @@ export default {
       if (this.isEdit) {
         this.officeStore.editWorker({
           ...this.worker,
-          workerId: this.workerId,
+          workerId: Number(this.workerId),
         });
       } else {
+        const nextWorkerId = this.officeStore.workers.length > 0 
+          ? Math.max(...this.officeStore.workers.map(worker => worker.workerId)) + 1 
+          : 1;
         this.officeStore.addWorker({
           ...this.worker,
-          workerId: Date.now(),
+          workerId: nextWorkerId,
           officeId: parseInt(this.worker.officeId, 10),
         });
       }
@@ -168,21 +177,29 @@ export default {
     },
   },
   watch: {
-    workerId(newVal) {
-      if (newVal) this.loadWorker();
-    },
-    show(newShow) {
-      if (newShow) {
-        this.loadWorker(); // Reload worker data when modal is opened
-      } else {
-        this.worker = this.initializeWorker();
-        this.currentStep = 1;
-      }
-    },
+  workerId(newVal) {
+    console.log("Worker ID changed:", newVal);
+    if (newVal) {
+      this.loadWorker();
+    } else {
+      this.worker = this.initializeWorker();
+    }
   },
+  show(newShow) {
+    if (newShow) {
+      this.loadWorker();
+    } else {
+      this.worker = this.initializeWorker();
+    }
+  },
+},
 };
 </script>
 <style scoped>
+.modal-button-div {
+  display: flex;
+  justify-content: center;
+}
 .step-indicator {
   display: flex;
   justify-content: center;

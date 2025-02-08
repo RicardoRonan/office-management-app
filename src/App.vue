@@ -1,9 +1,7 @@
 <template>
-  <div id="app">
     <!-- You can add a navbar or footer here if needed -->
     <router-view />
  
-  </div>
 </template>
 
 <script>
@@ -137,11 +135,13 @@ background-color :var(--bg-color);
   width:1.5rem;
   height: 1.5rem;
 }
-.add-button{
-  position: fixed;
-  right: 1.063rem;
-  bottom: 1.5rem;
-  left: 18.375rem;
+.add-button {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--bg-color);
 }
 .buttons-div {
 display: flex;
@@ -190,5 +190,19 @@ line-height: 1.816rem;
 letter-spacing: -2%;
 color: #000;
 gap: 0.75rem;
+}
+.confirm-delete-modal {
+height: 15.625rem;
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+}
+.modal-header {
+display: flex;
+color: #000;
+justify-content: start;
+align-items: baseline;
+gap: 0.75rem;
+font-size: 1.25rem;
 }
 </style>

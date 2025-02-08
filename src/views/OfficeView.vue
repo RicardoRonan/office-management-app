@@ -38,22 +38,6 @@
           class="worker-div"
         >
           <div class="worker-details">
-            <BaseModal :show="showFirstModal" @close="showFirstModal = false">
-              <div class="buttons-div">
-                <button
-                  class="primary-button"
-                  @click="openWorkerEditModal(worker.id)"
-                >
-                  EDIT STAFF MEMBER
-                </button>
-                <button
-                  class="secondary-button"
-                  @click="deleteWorker(worker.id)"
-                >
-                  DELETE STAFF MEMBER
-                </button>
-              </div>
-            </BaseModal>
             <img :src="worker.Avatar" alt="avatar" />
             <p class="worker-name">
               {{ worker.FirstName }} {{ worker.LastName }}
@@ -61,7 +45,7 @@
           </div>
           <div class="worker-menu">
             <img
-              @click="showFirstModal = true"
+              @click="openWorkerMenu(worker.id)"
               src="../assets/3-dots.svg"
               class="icon"
               alt="3-dot-menu"
@@ -69,25 +53,60 @@
           </div>
         </li>
       </ul>
+      <BaseModal :show="showFirstModal" @close="showFirstModal = false">
+        <div class="buttons-div">
+          <button
+            class="primary-button"
+            @click="openWorkerEditModal(selectedWorkerId)"
+          >
+            EDIT STAFF MEMBER
+          </button>
+          <button
+            class="secondary-button"
+            @click="deleteWorker(selectedWorkerId)"
+          >
+            DELETE STAFF MEMBER
+          </button>
+        </div>
+      </BaseModal>
       <WorkerForm
-       :worker="selectedWorker"
         :officeId="officeId"
         :workerId="workerId"
-        @edit-worker="editWorker"
         :show="showSecondModal"
-        @close="showSecondModal = false"
+        @close="showSecondModal = false, showFirstModal = false"
       />
 
-      <button @click="addWorker">
-        <img
-          src="../assets/add-button.svg"
-          alt="add-button"
-          class="add-button"
-        />
+      <button @click="addWorker" class="add-button">
+        <img src="../assets/add-button.svg" alt="add-button" />
       </button>
     </div>
-
     <p v-else>Loading...</p>
+    <BaseModal
+      :show="deleteWorkerModal"
+      v-if="deleteWorkerModal"
+      @close="cancelDelete"
+    >
+      <div class="confirm-delete-modal">
+        <div class="modal-header">
+          <button @click="cancelDelete" class="back-button">
+            <img
+              src="../assets/arrow-left.svg"
+              alt="back-button"
+              class="icon"
+            />
+          </button>
+          <h3 class="heading">Are You Sure You Want To Delete Staff Member?</h3>
+        </div>
+        <div class="buttons-div">
+          <button class="delete-button" @click="confirmDelete">
+            DELETE STAFF MEMBER
+          </button>
+          <button class="secondary-button" @click="cancelDelete">
+            KEEP STAFF MEMBER
+          </button>
+        </div>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
@@ -96,7 +115,6 @@ import { useOfficeStore } from "../store";
 import BaseModal from "@/components/BaseModal.vue";
 import OfficeCard from "@/components/OfficeCard.vue";
 import WorkerForm from "@/components/WorkerForm.vue";
-// import { mapActions } from "pinia";
 
 export default {
   components: {
@@ -110,6 +128,8 @@ export default {
       searchQuery: "",
       showFirstModal: false,
       showSecondModal: false,
+      selectedWorkerId: null,
+      deleteWorkerModal: false,
       workerId: null,
     };
   },
@@ -124,43 +144,53 @@ export default {
     },
     filteredWorkers() {
       if (!this.office || !this.office.workers) return [];
-      console.log("Workers in Office:", this.office.workers); // Debugging
       const query = this.searchQuery.toLowerCase();
       return this.office.workers.filter((worker) => {
         const fullName = `${worker.FirstName} ${worker.LastName}`.toLowerCase();
         return fullName.includes(query);
       });
     },
-    selectedWorker() {
-      if (!this.workerId) return null;
-      return this.office?.workers.find((worker) => worker.id === this.workerId);
-    },
   },
   methods: {
     async loadState() {
       await this.officeStore.loadState();
     },
-
     goBack() {
       this.$router.go(-1);
+    },
+    openWorkerMenu(workerId) {
+      this.selectedWorkerId = workerId;
+      this.showFirstModal = true;
     },
     openWorkerEditModal(workerId) {
       this.workerId = workerId;
       this.showSecondModal = true;
+      console.log("Editing Worker ID:", workerId);
     },
     addWorker() {
       this.workerId = null;
       this.showSecondModal = true;
     },
-
     editWorker(worker) {
       this.officeStore.editWorker(worker);
       this.workerId = null;
     },
     deleteWorker(workerId) {
-      if (confirm("Are you sure you want to delete this worker?")) {
-        this.officeStore.deleteWorker(workerId);
+      this.workerId = workerId;
+      this.deleteWorkerModal = true;
+    },
+    confirmDelete() {
+      if (this.workerId) {
+        console.log("Deleting Worker ID:", this.workerId);
+        this.officeStore.deleteWorker(this.workerId);
+        this.deleteWorkerModal = false;
+        this.showFirstModal = false;
+        this.workerId = null;
       }
+    },
+    cancelDelete() {
+      this.deleteWorkerModal = false;
+      this.workerId = null;
     },
   },
   watch: {
@@ -173,6 +203,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 #office {
   display: flex;

@@ -49,9 +49,6 @@ export const useOfficeStore = defineStore("officeStore", {
       });
     },
     getWorkers: (state) => state.workers,
-    getWorkerById: (state) => (workerId) => {
-      return state.workers.find((worker) => worker.id === parseInt(workerId));
-    },
     getAvailableColors: (state) => state.availableColors,
   },
 
@@ -63,8 +60,17 @@ export const useOfficeStore = defineStore("officeStore", {
           axios.get("http://localhost:5000/workers"),
         ]);
 
-        this.offices = officesRes.data;
+        this.offices = officesRes.data.map(office => ({
+          ...office,
+          workers: [],
+        }));
         this.workers = workersRes.data;
+        this.workers.forEach(worker => {
+          const office = this.offices.find(office => office.id === worker.officeId);
+          if (office) {
+            office.workers.push(worker);
+          }
+        });
       } catch (error) {
         console.error("Error loading state from db.json:", error);
       }
@@ -77,7 +83,7 @@ export const useOfficeStore = defineStore("officeStore", {
     async addOffice(office) {
       try {
         const response = await axios.post("http://localhost:5000/offices", office);
-        this.offices.push(response.data);
+        this.offices.push({ ...response.data, workers: [] });
       } catch (error) {
         console.error("Error adding office:", error);
       }
@@ -106,6 +112,10 @@ export const useOfficeStore = defineStore("officeStore", {
       try {
         const response = await axios.post("http://localhost:5000/workers", worker);
         this.workers.push(response.data);
+        const office = this.offices.find(office => office.id === worker.officeId);
+        if (office) {
+          office.workers.push(response.data);
+        }
       } catch (error) {
         console.error("Error adding worker:", error);
       }
@@ -116,6 +126,11 @@ export const useOfficeStore = defineStore("officeStore", {
         await axios.put(`http://localhost:5000/workers/${updatedWorker.id}`, updatedWorker);
         const index = this.workers.findIndex((worker) => worker.id === updatedWorker.id);
         if (index !== -1) this.workers.splice(index, 1, updatedWorker);
+        const office = this.offices.find(office => office.id === updatedWorker.officeId);
+        if (office) {
+          const workerIndex = office.workers.findIndex(worker => worker.id === updatedWorker.id);
+          if (workerIndex !== -1) office.workers.splice(workerIndex, 1, updatedWorker);
+        }
       } catch (error) {
         console.error("Error updating worker:", error);
       }
@@ -125,10 +140,12 @@ export const useOfficeStore = defineStore("officeStore", {
       try {
         await axios.delete(`http://localhost:5000/workers/${workerId}`);
         this.workers = this.workers.filter((worker) => worker.id !== workerId);
+        this.offices.forEach(office => {
+          office.workers = office.workers.filter(worker => worker.id !== workerId);
+        });
       } catch (error) {
         console.error("Error deleting worker:", error);
       }
-    }    
-    
-  }
+    },
+  },
 });

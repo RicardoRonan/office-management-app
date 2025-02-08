@@ -13,8 +13,10 @@
       @delete-office="deleteOffice"
       @click="viewOffice(office)"
     />
+<div class="add-button">
+  <router-link to="/office/new"><img src="../assets/add-button.svg" alt="add-button"  /></router-link>
 
-    <router-link to="/office/new"><img src="../assets/add-button.svg" alt="add-button" class="add-button" /></router-link>
+</div>
   </div>
 </template>
 <script>

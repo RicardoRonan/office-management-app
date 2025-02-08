@@ -38,14 +38,13 @@
       />
       <input
         class="input"
-        v-model="office.MaximumCapacity"
+        v-model.number="office.MaximumCapacity"
         placeholder="Maximum Capacity"
         type="number"
         min="1"
         max="25"
         required
       />
-      <!-- Color selection dropdown -->
       <label for="office-color" class="sub-heading" id="office-color-heading"
         >Office Color</label
       >
@@ -64,21 +63,46 @@
           {{ isEdit ? "UPDATE" : "ADD" }} OFFICE
         </button>
         <button
+          v-if="isEdit"
           class="secondary-button"
           id="delete-office"
-          @click="deleteOffice"
+          @click.prevent="deleteOffice"
         >
           Delete Office
         </button>
       </div>
     </form>
+
+    <!-- Delete Confirmation Modal -->
+    <BaseModal :show="deleteOfficeModal" @close="closeDeleteModal">
+      <div class="confirm-delete-modal">
+        <div class="modal-header">
+          <button  @click="closeDeleteModal" class="back-button">
+          <img src="../assets/arrow-left.svg" alt="back-button" class="icon" />
+        </button>
+          <h3 class="heading">Are You Sure You Want To Delete This Office?</h3>
+        </div>
+        <div class="buttons-div">
+          <button class="delete-button" @click="confirmDelete">
+            DELETE OFFICE
+          </button>
+          <button class="secondary-button" @click="closeDeleteModal">
+            CANCEL
+          </button>
+        </div>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
 <script>
 import { useOfficeStore } from "../store";
+import BaseModal from "@/components/BaseModal.vue";
 
 export default {
+  components: {
+    BaseModal,
+  },
   props: {
     id: {
       type: String,
@@ -94,9 +118,10 @@ export default {
             PhysicalAddress: "",
             EmailAddress: "",
             PhoneNumber: "",
-            MaximumCapacity: "",
-            OfficeColor: "", // Default color
+            MaximumCapacity: 1,
+            OfficeColor: "",
           },
+      deleteOfficeModal: false,
     };
   },
   computed: {
@@ -117,11 +142,12 @@ export default {
       if (this.isEdit) {
         officeStore.editOffice(this.office);
       } else {
+        const maxId = Math.max(...officeStore.getOffices.map(office => office.id), 0);
+        this.office.id = maxId + 1; // Ensure the new office gets a unique id
         officeStore.addOffice(this.office);
       }
       this.$router.push("/");
     },
-
     getOfficeById(id) {
       const officeStore = useOfficeStore();
       const office =
@@ -133,28 +159,35 @@ export default {
         PhysicalAddress: office.PhysicalAddress || "",
         EmailAddress: office.EmailAddress || "",
         PhoneNumber: office.PhoneNumber || "",
-        MaximumCapacity: office.MaximumCapacity || "",
+        MaximumCapacity: office.MaximumCapacity || 1,
         OfficeColor: office.OfficeColor,
       };
     },
     deleteOffice() {
-      if (confirm("Are you sure you want to delete this office?")) {
-        const officeStore = useOfficeStore();
-        officeStore.deleteOffice(this.office.id);
-        this.$router.push("/");
-      }
+      console.log("Delete button clicked");
+      this.deleteOfficeModal = true; 
+    },
+    confirmDelete() {
+      const officeStore = useOfficeStore();
+      officeStore.deleteOffice(this.office.id); 
+      this.closeDeleteModal(); 
+      this.$router.push("/"); 
+    },
+    closeDeleteModal() {
+      this.deleteOfficeModal = false; 
     },
     selectColor(color) {
       this.office.OfficeColor = color;
     },
-    created() {
+  },
+  created() {
     if (this.id) {
       this.office = this.getOfficeById(this.id);
     }
   },
-  },
 };
 </script>
+
 <style scoped>
 .office-form {
   display: flex;
