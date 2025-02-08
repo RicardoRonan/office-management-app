@@ -32,9 +32,9 @@
         <h4 id="staff-members-count">{{ office.workers.length }}</h4>
       </div>
       <ul>
-        <div
+        <li
           v-for="worker in filteredWorkers"
-          :key="worker.workerId"
+          :key="worker.id"
           class="worker-div"
         >
           <div class="worker-details">
@@ -42,13 +42,13 @@
               <div class="buttons-div">
                 <button
                   class="primary-button"
-                  @click="openWorkerEditModal(worker.workerId)"
+                  @click="openWorkerEditModal(worker.id)"
                 >
                   EDIT STAFF MEMBER
                 </button>
                 <button
                   class="secondary-button"
-                  @click="deleteWorker(worker.workerId)"
+                  @click="deleteWorker(worker.id)"
                 >
                   DELETE STAFF MEMBER
                 </button>
@@ -67,9 +67,10 @@
               alt="3-dot-menu"
             />
           </div>
-        </div>
+        </li>
       </ul>
       <WorkerForm
+       :worker="selectedWorker"
         :officeId="officeId"
         :workerId="workerId"
         @edit-worker="editWorker"
@@ -84,7 +85,6 @@
           class="add-button"
         />
       </button>
-
     </div>
 
     <p v-else>Loading...</p>
@@ -96,6 +96,7 @@ import { useOfficeStore } from "../store";
 import BaseModal from "@/components/BaseModal.vue";
 import OfficeCard from "@/components/OfficeCard.vue";
 import WorkerForm from "@/components/WorkerForm.vue";
+// import { mapActions } from "pinia";
 
 export default {
   components: {
@@ -105,78 +106,76 @@ export default {
   },
   data() {
     return {
+      officeStore: useOfficeStore(),
       searchQuery: "",
-      office: null,
       showFirstModal: false,
       showSecondModal: false,
-      workerId: this.workerId,
+      workerId: null,
     };
   },
   computed: {
     officeId() {
       return this.$route.params.id;
     },
+    office() {
+      return this.officeStore.getOffices.find(
+        (o) => o.id === parseInt(this.officeId)
+      );
+    },
     filteredWorkers() {
+      if (!this.office || !this.office.workers) return [];
+      console.log("Workers in Office:", this.office.workers); // Debugging
       const query = this.searchQuery.toLowerCase();
       return this.office.workers.filter((worker) => {
         const fullName = `${worker.FirstName} ${worker.LastName}`.toLowerCase();
         return fullName.includes(query);
       });
     },
+    selectedWorker() {
+      if (!this.workerId) return null;
+      return this.office?.workers.find((worker) => worker.id === this.workerId);
+    },
   },
   methods: {
+    async loadState() {
+      await this.officeStore.loadState();
+    },
+
     goBack() {
       this.$router.go(-1);
-    },
-
-    fetchOffice() {
-      const officeStore = useOfficeStore();
-
-      const officeData = officeStore.getOffices.find(
-        (o) => o.id === parseInt(this.officeId)
-      );
-
-      if (officeData) {
-        this.office = { ...officeData };
-        this.office.workers = officeStore.getWorkers.filter(
-          (worker) => worker.officeId === this.office.id
-        );
-      } else {
-        this.office = null;
-      }
-    },
-    addWorker() {
-      this.workerId = null; 
-      this.showSecondModal = true;
-    },
-    editWorker(worker) {
-      const officeStore = useOfficeStore();
-      officeStore.editWorker(worker);
-      this.fetchOffice(); 
-    },
-    deleteWorker(workerId) {
-      if (confirm("Are you sure you want to delete this worker?")) {
-        const officeStore = useOfficeStore();
-        officeStore.deleteWorker(workerId);
-        this.fetchOffice();
-      }
     },
     openWorkerEditModal(workerId) {
       this.workerId = workerId;
       this.showSecondModal = true;
     },
+    addWorker() {
+      this.workerId = null;
+      this.showSecondModal = true;
+    },
+
+    editWorker(worker) {
+      this.officeStore.editWorker(worker);
+      this.workerId = null;
+    },
+    deleteWorker(workerId) {
+      if (confirm("Are you sure you want to delete this worker?")) {
+        this.officeStore.deleteWorker(workerId);
+      }
+    },
   },
   watch: {
-    "$route.params.id": "fetchOffice",
+    "$route.params.id"() {
+      this.loadState();
+    },
   },
-  created() {
-    this.fetchOffice();
+  async mounted() {
+    await this.loadState();
   },
 };
 </script>
 <style scoped>
-#office{
-  display:flex;
+#office {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -186,13 +185,7 @@ ul {
   flex-direction: column;
   gap: 1rem;
 }
-.input-icon {
-  position: absolute;
-  right: 1rem; 
-  width: 1rem;
-  height: 1rem;
-  pointer-events: none; 
-}
+
 #search-staff-member-div {
   display: flex;
   justify-content: center;
@@ -205,9 +198,9 @@ ul {
   border: none;
   border-radius: 0.5rem;
 }
-.search-staff-member::placeholder{
-  font-size:0.75rem;
-  line-height:1.375rem ;
+.search-staff-member::placeholder {
+  font-size: 0.75rem;
+  line-height: 1.375rem;
   font-weight: 400;
   letter-spacing: 0%;
 }

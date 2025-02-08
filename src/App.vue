@@ -131,6 +131,7 @@ background-color :var(--bg-color);
 }
 #app{
   padding:1rem;
+  height: 100vh;
 }
 .icon{
   width:1.5rem;

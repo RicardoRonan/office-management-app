@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import axios from "axios";
 import astronautPeace from "@/assets/staff-avatar/astronaut-peace-emote.svg";
 import astronautSuper from "@/assets/staff-avatar/astronaut-super.svg";
 import astronautRocket from "@/assets/staff-avatar/astronaut-sitting-on-rocket.svg";
@@ -9,50 +10,8 @@ import astronautBalloons from "@/assets/staff-avatar/astronaut-balloons.svg";
 
 export const useOfficeStore = defineStore("officeStore", {
   state: () => ({
-    offices: [
-      {
-        id: 1,
-        OfficeName: "Specno",
-        PhysicalAddress: "test place",
-        EmailAddress: "info@specno.com",
-        PhoneNumber: "082 364 9864",
-        MaximumCapacity: "25",
-        OfficeColor: "",
-      },
-      {
-        id: 2,
-        OfficeName: "Company Name",
-        PhysicalAddress: "test place 2",
-        EmailAddress: "info@companyname",
-        PhoneNumber: "0745162365",
-        MaximumCapacity: "25",
-        OfficeColor: "",
-      },
-    ],
-    workers: [
-      {
-        workerId: 1,
-        officeId: 1,
-        FirstName: "Ricardo",
-        LastName: "Moses",
-        Avatar: "",
-      },
-      {
-        workerId: 2,
-        officeId: 2,
-        FirstName: "Joshua",
-        LastName: "Huckleberry",
-        Avatar: "",
-      },
-      {
-        workerId: 3,
-        officeId: 2,
-        FirstName: "John",
-        LastName: "Doughnuts",
-        Avatar: "",
-      },
-    ],
-
+    offices: [],
+    workers: [],
     availableColors: [
       { name: "Sunglow", hex: "#ffbe0b" },
       { name: "Coral Orange", hex: "#ff9b71" },
@@ -89,110 +48,87 @@ export const useOfficeStore = defineStore("officeStore", {
         };
       });
     },
-    getWorkers: (state) => {
-      return state.workers 
+    getWorkers: (state) => state.workers,
+    getWorkerById: (state) => (workerId) => {
+      return state.workers.find((worker) => worker.id === parseInt(workerId));
     },
-    getAvailableColors: (state) => state.availableColors, // Getter for colors
+    getAvailableColors: (state) => state.availableColors,
   },
 
   actions: {
-    //#region ADD OFFICE
-    addOffice(office) {
-      const newId = this.offices.length
-        ? Math.max(...this.offices.map((o) => o.id)) + 1
-        : 1;
-      office.id = newId;
+    async loadState() {
+      try {
+        const [officesRes, workersRes] = await Promise.all([
+          axios.get("http://localhost:5000/offices"),
+          axios.get("http://localhost:5000/workers"),
+        ]);
+
+        this.offices = officesRes.data;
+        this.workers = workersRes.data;
+      } catch (error) {
+        console.error("Error loading state from db.json:", error);
+      }
+    },
+
+    async saveState() {
+      console.warn("saveState() is now managed by API calls, no localStorage usage.");
+    },
+
+    async addOffice(office) {
+      try {
+        const response = await axios.post("http://localhost:5000/offices", office);
+        this.offices.push(response.data);
+      } catch (error) {
+        console.error("Error adding office:", error);
+      }
+    },
+
+    async editOffice(updatedOffice) {
+      try {
+        await axios.put(`http://localhost:5000/offices/${updatedOffice.id}`, updatedOffice);
+        const index = this.offices.findIndex((office) => office.id === updatedOffice.id);
+        if (index !== -1) this.offices.splice(index, 1, updatedOffice);
+      } catch (error) {
+        console.error("Error updating office:", error);
+      }
+    },
+
+    async deleteOffice(officeId) {
+      try {
+        await axios.delete(`http://localhost:5000/offices/${officeId}`);
+        this.offices = this.offices.filter((office) => office.id !== officeId);
+      } catch (error) {
+        console.error("Error deleting office:", error);
+      }
+    },
+
+    async addWorker(worker) {
+      try {
+        const response = await axios.post("http://localhost:5000/workers", worker);
+        this.workers.push(response.data);
+      } catch (error) {
+        console.error("Error adding worker:", error);
+      }
+    },
+
+    async editWorker(updatedWorker) {
+      try {
+        await axios.put(`http://localhost:5000/workers/${updatedWorker.id}`, updatedWorker);
+        const index = this.workers.findIndex((worker) => worker.id === updatedWorker.id);
+        if (index !== -1) this.workers.splice(index, 1, updatedWorker);
+      } catch (error) {
+        console.error("Error updating worker:", error);
+      }
+    },
+
+    async deleteWorker(workerId) {
+      try {
+        await axios.delete(`http://localhost:5000/workers/${workerId}`);
+        this.workers = this.workers.filter((worker) => worker.id !== workerId);
+      } catch (error) {
+        console.error("Error deleting worker:", error);
+      }
+    }    
     
-      if (!office.OfficeColor || !this.availableColors.some((c) => c.hex === office.OfficeColor)) {
-        const randomColor = this.getRandomColor();
-        office.OfficeColor = randomColor;
-      }
-    
-      this.offices.push(office);
-      this.saveState();
-    },
-    
-    //#endregion
-    getRandomColor() {
-      const randomIndex = Math.floor(Math.random() * this.availableColors.length);
-      return this.availableColors[randomIndex].hex;
-    },
-    //#region EDIT OFFICE
-    editOffice(updatedOffice) {
-      const index = this.offices.findIndex(
-        (office) => office.id === updatedOffice.id
-      );
-      if (index !== -1) {
-        if (
-          !updatedOffice.OfficeColor ||
-          !this.availableColors.some((c) => c.hex === updatedOffice.OfficeColor)
-        ) {
-          updatedOffice.OfficeColor = this.getRandomColor();
-        }
-
-        this.offices.splice(index, 1, updatedOffice);
-        this.saveState();
-      }
-    },
-    //#endregion
-
-    //#region DELETE OFFICE
-    deleteOffice(officeId) {
-      this.offices = this.offices.filter((office) => office.id !== officeId);
-      this.saveState();
-    },
-    //#endregion
-
-    //#region ADD WORKER
-    addWorker(worker) {
-      if (!worker.Avatar) {
-        worker.Avatar = this.availableAvatars[0];
-      }
-      this.workers.push(worker);
-      this.saveState();
-    },
-    //#endregion
-
-    //#region EDIT WORKER
-    editWorker(updatedWorker) {
-      const index = this.workers.findIndex(
-        (worker) => worker.workerId === updatedWorker.workerId
-      );
-      if (index !== -1) {
-        if (!updatedWorker.Avatar) {
-          updatedWorker.Avatar = this.availableAvatars[0];
-        }
-        this.workers.splice(index, 1, updatedWorker);
-        this.saveState();
-      }
-    },
-    //#endregion
-
-    //#region DElETE WORKER
-    deleteWorker(workerId) {
-      const index = this.workers.findIndex(
-        (worker) => worker.workerId === workerId
-      );
-      if (index !== -1) {
-        this.workers.splice(index, 1);
-
-        this.saveState();
-      }
-    },
-    //#endregion
-
-    // Save state to localStorage
-    saveState() {
-      localStorage.setItem("offices", JSON.stringify(this.offices));
-      localStorage.setItem("workers", JSON.stringify(this.workers));
-    },
-
-    // Load state from localStorage
-    loadState() {
-      const offices = JSON.parse(localStorage.getItem("offices")) || [];
-      const workers = JSON.parse(localStorage.getItem("workers")) || [];
-      this.offices = offices;
-      this.workers = workers;
-    },
-  },
+  }
 });

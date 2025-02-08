@@ -1,0 +1,111 @@
+{
+  "offices": [
+    {
+      "id": 1,
+      "OfficeName": "Specno",
+      "PhysicalAddress": "test place",
+      "EmailAddress": "info@specno.com",
+      "PhoneNumber": "082 364 9864",
+      "MaximumCapacity": "25",
+      "OfficeColor": "#489dda"
+    },
+    {
+      "id": 2,
+      "OfficeName": "Company Name",
+      "PhysicalAddress": "test place 2",
+      "EmailAddress": "info@companyname",
+      "PhoneNumber": "0745162365",
+      "MaximumCapacity": "25",
+      "OfficeColor": ""
+    },
+    {
+      "id": 3,
+      "OfficeName": "etrte",
+      "PhysicalAddress": "wrthy",
+      "EmailAddress": "email@gasfdg",
+      "PhoneNumber": "svsdsvdsv",
+      "MaximumCapacity": 25,
+      "OfficeColor": "#ffbe0b"
+    },
+    {
+      "OfficeName": "cdcsc",
+      "PhysicalAddress": "sdcsc",
+      "EmailAddress": "sdcsd@fvdv",
+      "PhoneNumber": "cdfvd",
+      "MaximumCapacity": 25,
+      "OfficeColor": "#fb5607",
+      "id": 4
+    }
+  ],
+  "workers": [
+    {
+      "id": 1,
+      "officeId": 1,
+      "FirstName": "Ricardo",
+      "LastName": "Moses",
+      "Avatar": ""
+    },
+    {
+      "id": 2,
+      "officeId": 2,
+      "FirstName": "Joshua",
+      "LastName": "Huckleberry",
+      "Avatar": ""
+    },
+    {
+      "id": 3,
+      "officeId": 2,
+      "FirstName": "John",
+      "LastName": "Doughnuts",
+      "Avatar": ""
+    },
+    {
+      "officeId": "4",
+      "FirstName": "csdcs",
+      "LastName": "csdcsc",
+      "Avatar": "/img/astronaut-peace-emote.4653552f.svg",
+      "id": 10
+    },
+    {
+      "isTrusted": true,
+      "_vts": 1739018175393,
+      "id": 19
+    },
+    {
+      "isTrusted": true,
+      "_vts": 1739018176070,
+      "id": 20
+    },
+    {
+      "isTrusted": true,
+      "_vts": 1739018177778,
+      "id": 21
+    },
+    {
+      "isTrusted": true,
+      "_vts": 1739018179178,
+      "id": 22
+    },
+    {
+      "isTrusted": true,
+      "_vts": 1739018639849,
+      "id": 23
+    },
+    {
+      "workerId": 1739020806834,
+      "officeId": 4,
+      "FirstName": "vdfvvd",
+      "LastName": "vvdvdvd",
+      "Avatar": "/img/astronaut-balloons.53352480.svg",
+      "id": 24
+    },
+    {
+      "workerId": 25,
+      "officeId": 4,
+      "FirstName": "t4ytryuk",
+      "LastName": "erhtjyt",
+      "Avatar": "/img/astronaut-balloons.53352480.svg",
+      "id": 25
+    }
+  ]
+}

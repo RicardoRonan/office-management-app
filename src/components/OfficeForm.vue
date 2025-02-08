@@ -55,7 +55,7 @@
           :key="color.hex"
           :style="{ backgroundColor: color.hex }"
           :class="{ selected: office.OfficeColor === color.hex }"
-          @click="selectColor(color)"
+          @click="selectColor(color.hex)"
           class="color-option"
         ></div>
       </div>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { useOfficeStore } from "../store"; // Adjust the path to your store
+import { useOfficeStore } from "../store";
 
 export default {
   props: {
@@ -97,12 +97,14 @@ export default {
             MaximumCapacity: "",
             OfficeColor: "", // Default color
           },
-      availableColors: useOfficeStore().getAvailableColors,
     };
   },
   computed: {
     isEdit() {
       return !!this.$route.params.id;
+    },
+    availableColors() {
+      return useOfficeStore().getAvailableColors;
     },
   },
   methods: {
@@ -145,6 +147,11 @@ export default {
     selectColor(color) {
       this.office.OfficeColor = color;
     },
+    created() {
+    if (this.id) {
+      this.office = this.getOfficeById(this.id);
+    }
+  },
   },
 };
 </script>

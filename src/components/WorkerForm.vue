@@ -1,106 +1,87 @@
 <template>
-  <div>
-    <BaseModal v-if="show" :show="show" @close="$emit('close')">
-      <div>
-        <div class="modal-header">
-          <button
-            v-if="currentStep === 2"
-            @click="goBack()"
-            class="back-button"
-          >
-            <img
-              src="../assets/arrow-left.svg"
-              alt="back-button"
-              class="icon"
+  <BaseModal v-if="show" :show="show" @close="$emit('close')">
+    <div>
+      <div class="modal-header">
+        <button v-if="currentStep === 2" @click="goBack" class="back-button">
+          <img src="../assets/arrow-left.svg" alt="back-button" class="icon" />
+        </button>
+        <h3 class="heading" :class="{ 'edit-mode': isEdit }">
+          {{ isEdit ? "Edit" : "New" }} Staff Member
+        </h3>
+        <button class="close-btn" @click="$emit('close')">
+          <img
+            src="../assets/close-circle.svg"
+            alt="close-button"
+            class="icon"
+          />
+        </button>
+      </div>
+
+      <form @submit.prevent="submitForm">
+        <div v-if="currentStep === 1">
+          <div class="input-div">
+            <input
+              v-model="worker.FirstName"
+              class="input"
+              type="text"
+              placeholder="First Name"
+              required
             />
-          </button>
-          <div class="worker-heading-div">
-            <h3 class="heading" :class="{ 'edit-mode': isEdit }">
-              {{ isEdit ? "Edit" : "New" }} Staff Member
-            </h3>
+            <input
+              v-model="worker.LastName"
+              class="input"
+              type="text"
+              placeholder="Last Name"
+              required
+            />
           </div>
-          <button class="close-btn" @click="$emit('close')">
+
+          <div class="step-indicator">
+            <div
+              class="dot"
+              :class="{ active: currentStep === 1 }"
+              @click="setStep(1)"
+            ></div>
+            <div
+              class="dot"
+              :class="{ active: currentStep === 2 }"
+              @click="setStep(2)"
+            ></div>
+          </div>
+          <button class="primary-button" @click="nextStep">Next</button>
+        </div>
+
+        <div v-if="currentStep === 2">
+          <label class="sub-heading" for="avatar">Avatar</label>
+          <div id="avatar-div">
             <img
-              src="../assets/close-circle.svg"
-              alt="close-button"
-              class="icon"
+              v-for="avatar in availableAvatars"
+              :key="avatar"
+              :src="avatar"
+              :class="{ selected: worker.Avatar === avatar }"
+              @click="selectAvatar(avatar)"
+              class="avatar-option"
             />
+          </div>
+          <div class="step-indicator">
+            <div
+              class="dot"
+              :class="{ active: currentStep === 1 }"
+              @click="setStep(1)"
+            ></div>
+            <div
+              class="dot"
+              :class="{ active: currentStep === 2 }"
+              @click="setStep(2)"
+            ></div>
+          </div>
+          <button class="primary-button" type="submit">
+            {{ isEdit ? "Update Staff Member" : "Add Staff Member" }}
           </button>
         </div>
-        <form @submit.prevent="submitForm">
-          <div v-if="currentStep === 1">
-            <div class="input-div" id="worker-form-input-div">
-              <input
-                class="input"
-                type="text"
-                v-model="worker.FirstName"
-                placeholder="First Name"
-                required
-              />
-              <input
-                class="input"
-                type="text"
-                v-model="worker.LastName"
-                placeholder="Last Name"
-                required
-              />
-            </div>
-            <div class="step-indicator">
-              <div
-                class="dot"
-                :class="{ active: currentStep === 1 }"
-                @click="setStep(1)"
-              ></div>
-              <div
-                class="dot"
-                :class="{ active: currentStep === 2 }"
-                @click="setStep(2)"
-              ></div>
-            </div>
-            <div class="buttons-div">
-              <button class="primary-button" @click="nextStep">Next</button>
-            </div>
-          </div>
-          <div v-if="currentStep === 2">
-            <div class="modal-header">
-              <label class="sub-heading" id="choose-avatar" for="avatar"
-                >Avatar</label
-              >
-            </div>
-
-            <div id="avatar-div">
-              <img
-                v-for="avatar in availableAvatars"
-                :key="avatar"
-                :src="avatar"
-                :value="avatar"
-                :class="{ selected: worker.Avatar === avatar }"
-                @click="selectAvatar(avatar)"
-                class="avatar-option"
-              />
-            </div>
-            <div class="step-indicator">
-              <div
-                class="dot"
-                :class="{ active: currentStep === 1 }"
-                @click="setStep(1)"
-              ></div>
-              <div
-                class="dot"
-                :class="{ active: currentStep === 2 }"
-                @click="setStep(2)"
-              ></div>
-            </div>
-            <div class="buttons-div">
-              <button class="primary-button" type="submit">
-                {{ isEdit ? "UPDATE STAFF MEMBER" : "ADD STAFF MEMBER" }}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </BaseModal>
-  </div>
+      </form>
+    </div>
+  </BaseModal>
 </template>
 
 <script>
@@ -108,144 +89,99 @@ import { useOfficeStore } from "../store";
 import BaseModal from "@/components/BaseModal.vue";
 
 export default {
-  components: {
-    BaseModal,
-  },
-
+  components: { BaseModal },
   props: {
-    officeId: {
-      type: [String, Number],
-      required: true,
-    },
-    workerId: {
-      type: [String, Number],
-      default: null,
-    },
-    show: {
-      type: Boolean,
-      required: true,
-    },
+    workerId: { type: [String, Number], default: null },
+    show: { type: Boolean, required: true },
+    officeId: { type: [String, Number], required: true },
   },
-
   data() {
     return {
       currentStep: 1,
       worker: this.initializeWorker(),
-      isNewWorker: false,
+      officeStore: useOfficeStore(),
     };
-  },
-  created() {
-    if (this.workerId) {
-      this.worker = this.getWorkerById(this.workerId);
-      this.isNewWorker = false;
-    } else {
-      this.worker = this.initializeWorker();
-      this.isNewWorker = true;
-    }
   },
   computed: {
     isEdit() {
       return !!this.workerId;
     },
     availableAvatars() {
-      const officeStore = useOfficeStore();
-      return officeStore.availableAvatars;
+      return this.officeStore.availableAvatars;
+    },
+    offices() {
+      return this.officeStore.offices;
     },
   },
-
+  created() {
+    this.loadWorker();
+  },
   methods: {
-    goBack() {
-      if (this.currentStep > 1) this.currentStep--;
-    },
-    setStep(step) {
-      this.currentStep = step;
-    },
-    getWorkerById(workerId) {
-      const officeStore = useOfficeStore();
-      const worker = officeStore.getWorkers.find(
-        (worker) => worker.workerId === parseInt(workerId, 10)
-      );
-      return worker ? { ...worker } : this.initializeWorker();
+    loadWorker() {
+      if (this.isEdit) {
+        const existingWorker = this.officeStore.getWorkerById(this.workerId);
+        if (existingWorker) {
+          this.worker = JSON.parse(JSON.stringify(existingWorker));
+        } else {
+          this.worker = this.initializeWorker();
+        }
+      } else {
+        this.worker = this.initializeWorker();
+      }
     },
 
     initializeWorker() {
       return {
         workerId: "",
-        officeId: this.officeId,
+        officeId: parseInt(this.officeId),
         FirstName: "",
         LastName: "",
         Avatar: "",
       };
     },
-
+    setStep(step) {
+      this.currentStep = step;
+    },
     nextStep() {
       if (this.currentStep < 2) this.currentStep++;
     },
-
-    prevStep() {
+    goBack() {
       if (this.currentStep > 1) this.currentStep--;
     },
-
-    getMaxWorkerId() {
-      const officeStore = useOfficeStore();
-      const workers = officeStore.getWorkers;
-      return workers.length
-        ? Math.max(...workers.map((worker) => worker.workerId))
-        : 0;
-    },
-
-    submitForm() {
-      const officeStore = useOfficeStore();
-
-      if (this.isEdit) {
-        const updatedWorker = {
-          ...this.worker,
-          workerId: parseInt(this.workerId, 10),
-        };
-        officeStore.editWorker(updatedWorker);
-      } else {
-        const maxWorkerId = this.getMaxWorkerId();
-        this.worker.workerId = maxWorkerId + 1;
-        this.worker.officeId = Number(this.officeId);
-        officeStore.addWorker(this.worker);
-      }
-
-      this.$emit("close");
-      this.$emit(this.isEdit ? "edit-worker" : "add-worker", this.worker);
-      this.$router.push(`/`);
-    },
-
     selectAvatar(avatar) {
       this.worker.Avatar = avatar;
     },
-  },
-
-  watch: {
-    workerId: {
-      immediate: true,
-      handler(newWorkerId) {
-        if (newWorkerId) {
-          this.worker = Object.assign({}, this.getWorkerById(newWorkerId));
-          this.isNewWorker = false;
-        } else {
-          this.worker = this.initializeWorker();
-          this.isNewWorker = true;
-        }
-      },
+    submitForm() {
+      if (this.isEdit) {
+        this.officeStore.editWorker({
+          ...this.worker,
+          workerId: this.workerId,
+        });
+      } else {
+        this.officeStore.addWorker({
+          ...this.worker,
+          workerId: Date.now(),
+          officeId: parseInt(this.worker.officeId, 10),
+        });
+      }
+      this.$emit("close");
     },
-    show: {
-      immediate: true,
-      handler(newShow) {
-        if (!newShow && this.isNewWorker) {
-          this.worker = this.initializeWorker();
-          this.currentStep = 1;
-        }
-      },
+  },
+  watch: {
+    workerId(newVal) {
+      if (newVal) this.loadWorker();
+    },
+    show(newShow) {
+      if (newShow) {
+        this.loadWorker(); // Reload worker data when modal is opened
+      } else {
+        this.worker = this.initializeWorker();
+        this.currentStep = 1;
+      }
     },
   },
 };
 </script>
-
 <style scoped>
 .step-indicator {
   display: flex;
