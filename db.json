@@ -172,7 +172,7 @@
       "officeId": 4,
       "FirstName": "Peter",
       "LastName": "Adams",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-balloons.53352480.svg",
       "workerId": 16
     },
     {
@@ -180,7 +180,7 @@
       "officeId": 4,
       "FirstName": "Quinn",
       "LastName": "Baker",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-bad-boy.2b727b3c.svg",
       "workerId": 17
     },
     {
@@ -188,7 +188,7 @@
       "officeId": 4,
       "FirstName": "Rachel",
       "LastName": "Hall",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-holding-jupiter.40d0c68b.svg",
       "workerId": 18
     },
     {
@@ -196,7 +196,7 @@
       "officeId": 4,
       "FirstName": "Samuel",
       "LastName": "Allen",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-peace-emote.4653552f.svg",
       "workerId": 19
     },
     {
@@ -204,7 +204,7 @@
       "officeId": 4,
       "FirstName": "Tina",
       "LastName": "Young",
-      "Avatar": "/img/astronaut-balloons.53352480.svg",
+      "Avatar": "/img/astronaut-super.fc0dd20b.svg",
       "workerId": 20
     },
     {
@@ -212,7 +212,7 @@
       "officeId": 5,
       "FirstName": "Uma",
       "LastName": "Harris",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-peace-emote.4653552f.svg",
       "workerId": 21
     },
     {
@@ -220,7 +220,7 @@
       "officeId": 5,
       "FirstName": "Victor",
       "LastName": "Clark",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-super.fc0dd20b.svg",
       "workerId": 22
     },
     {
@@ -228,7 +228,7 @@
       "officeId": 5,
       "FirstName": "Wendy",
       "LastName": "Lewis",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-sitting-on-rocket.97eccae0.svg",
       "workerId": 23
     },
     {
@@ -236,7 +236,7 @@
       "officeId": 5,
       "FirstName": "Xavier",
       "LastName": "Walker",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-bad-boy.2b727b3c.svg",
       "workerId": 24
     },
     {
@@ -244,7 +244,7 @@
       "officeId": 5,
       "FirstName": "Yasmine",
       "LastName": "Robinson",
-      "Avatar": "",
+      "Avatar": "/img/astronaut-holding-jupiter.40d0c68b.svg",
       "workerId": 25
     }
   ]
