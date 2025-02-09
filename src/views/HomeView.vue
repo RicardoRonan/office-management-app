@@ -3,7 +3,8 @@
     <div class="home-heading-div">
       <h2 class="home-heading">All Offices</h2>
     </div>
-    <OfficeCard
+    <div v-if="offices.length">
+      <OfficeCard
       v-for="office in offices"
       :key="office.id"
       :office="office"
@@ -12,8 +13,10 @@
       @add-worker="addWorker"
       @delete-office="deleteOffice"
       @click="viewOffice(office)"
-    />
-<div class="add-button">
+      />
+    </div>
+    <p v-else>Loading...</p>
+    <div class="add-button">
   <router-link to="/office/new"><img src="../assets/add-button.svg" alt="add-button"  /></router-link>
 
 </div>
