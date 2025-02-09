@@ -185,6 +185,10 @@ button {
 }
 .home-heading-div {
   padding: 1rem;
+  display:flex;
+  justify-content: flex-start;
+  justify-content: start;
+  width: 21.438rem;
 }
 .home-heading {
   font-size: 1.75rem;
@@ -282,7 +286,9 @@ button {
   font-size: 1.25rem;
 }
 @media (min-width: 315px) and (max-width: 375px) {
-
+  .home-heading-div {
+  width: 17.438rem;
+}
 .page-header {
   gap: 3.188rem;
   width: 20.438rem;
