@@ -18,7 +18,7 @@ This project is built using Vue.js and uses several packages for various functio
 To clone the repository and run the project locally, follow these steps:
 
 1. Clone the repository:
-    git clone https://github.com/your-username/office-management-app.git
+    git clone https://github.com/RicardoRonan/office-management-app.git
 
 
 2. Navigate to the project directory:
@@ -50,4 +50,4 @@ https://lydian-ossified-cesium.glitch.me
 Deployment
 The application is deployed on Netlify. You can access the live version at:
 
-office-management-app-ricardo-moses.netlify.app
+ ### https://office-management-app-ricardo-moses.netlify.app
