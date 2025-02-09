@@ -117,6 +117,16 @@ video {
   --color-10-bright-navy-blue: #0072e8;
   --color-11-electric-purple: #8338ec;
 }
+#app {
+  padding: 1rem;
+  height: 100vh;
+  overflow-x:hidden;
+}
+#app::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none; 
+}
 
 body {
   height: 100vh;
@@ -194,10 +204,7 @@ button {
   line-height: 1.375rem;
   font-weight: 400;
 }
-#app {
-  padding: 1rem;
-  height: 100vh;
-}
+
 .icon {
   width: 1.5rem;
   height: 1.5rem;
@@ -279,11 +286,6 @@ button {
 .page-header {
   gap: 3.188rem;
   width: 20.438rem;
-}
-
-.add-button {
-  bottom: 6rem;
-  right: 4rem;
 }
 .modal-header{
 width: 17.563rem;
