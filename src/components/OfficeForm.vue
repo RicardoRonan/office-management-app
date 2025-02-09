@@ -51,10 +51,10 @@
       <div id="color-div">
         <div
           v-for="color in availableColors"
-          :key="color.hex"
-          :style="{ backgroundColor: color.hex }"
-          :class="{ selected: office.OfficeColor === color.hex }"
-          @click="selectColor(color.hex)"
+          :key="color.rgba"
+          :style="{ backgroundColor: color.rgba }"
+          :class="{ selected: office.OfficeColor === color.rgba }"
+          @click="selectColor(color.rgba)"
           class="color-option"
         ></div>
       </div>

@@ -13,18 +13,19 @@ export const useOfficeStore = defineStore("officeStore", {
     offices: [],
     workers: [],
     availableColors: [
-      { name: "Sunglow", hex: "#ffbe0b" },
-      { name: "Coral Orange", hex: "#ff9b71" },
-      { name: "Orange Red", hex: "#fb5607" },
-      { name: "Copper", hex: "#97512c" },
-      { name: "Pale Lilac", hex: "#dbbadd" },
-      { name: "Hollywood Cerise", hex: "#ff006e" },
-      { name: "Magic Mint", hex: "#a9f0d1" },
-      { name: "Islamic Green", hex: "#00b402" },
-      { name: "Steel Blue", hex: "#489dda" },
-      { name: "Bright Navy Blue", hex: "#0072e8" },
-      { name: "Electric Purple", hex: "#8338ec" },
-    ],
+      { "name": "Sunglow", "rgba": "rgba(255, 190, 11, 0.5)" },
+      { "name": "Coral Orange", "rgba": "rgba(255, 155, 113, 0.5)" },
+      { "name": "Orange Red", "rgba": "rgba(251, 86, 7, 0.5)" },
+      { "name": "Copper", "rgba": "rgba(151, 81, 44, 0.5)" },
+      { "name": "Pale Lilac", "rgba": "rgba(219, 186, 221, 0.5)" },
+      { "name": "Hollywood Cerise", "rgba": "rgba(255, 0, 110, 0.5)" },
+      { "name": "Magic Mint", "rgba": "rgba(169, 240, 209, 0.5)" },
+      { "name": "Islamic Green", "rgba": "rgba(0, 180, 2, 0.5)" },
+      { "name": "Steel Blue", "rgba": "rgba(72, 157, 218, 0.5)" },
+      { "name": "Bright Navy Blue", "rgba": "rgba(0, 114, 232, 0.5)" },
+      { "name": "Electric Purple", "rgba": "rgba(131, 56, 236, 0.5)" }
+    ]
+    ,
     availableAvatars: [
       astronautPeace.toString(),
       astronautSuper.toString(),
@@ -56,8 +57,8 @@ export const useOfficeStore = defineStore("officeStore", {
     async loadState() {
       try {
         const [officesRes, workersRes] = await Promise.all([
-          axios.get("http://localhost:5000/offices"),
-          axios.get("http://localhost:5000/workers"),
+          axios.get("https://lydian-ossified-cesium.glitch.me/offices"),
+          axios.get("https://lydian-ossified-cesium.glitch.me/workers"),
         ]);
 
         this.offices = officesRes.data.map(office => ({
@@ -82,7 +83,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async addOffice(office) {
       try {
-        const response = await axios.post("http://localhost:5000/offices", office);
+        const response = await axios.post("https://lydian-ossified-cesium.glitch.me/offices", office);
         this.offices.push({ ...response.data, workers: [] });
       } catch (error) {
         console.error("Error adding office:", error);
@@ -91,7 +92,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async editOffice(updatedOffice) {
       try {
-        await axios.put(`http://localhost:5000/offices/${updatedOffice.id}`, updatedOffice);
+        await axios.put(`https://lydian-ossified-cesium.glitch.me/offices/${updatedOffice.id}`, updatedOffice);
         const index = this.offices.findIndex((office) => office.id === updatedOffice.id);
         if (index !== -1) this.offices.splice(index, 1, updatedOffice);
       } catch (error) {
@@ -101,7 +102,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async deleteOffice(officeId) {
       try {
-        await axios.delete(`http://localhost:5000/offices/${officeId}`);
+        await axios.delete(`https://lydian-ossified-cesium.glitch.me/offices/${officeId}`);
         this.offices = this.offices.filter((office) => office.id !== officeId);
       } catch (error) {
         console.error("Error deleting office:", error);
@@ -110,7 +111,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async addWorker(worker) {
       try {
-        const response = await axios.post("http://localhost:5000/workers", worker);
+        const response = await axios.post("https://lydian-ossified-cesium.glitch.me/workers", worker);
         this.workers.push(response.data);
         const office = this.offices.find(office => office.id === worker.officeId);
         if (office) {
@@ -123,7 +124,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async editWorker(updatedWorker) {
       try {
-        await axios.put(`http://localhost:5000/workers/${updatedWorker.id}`, updatedWorker);
+        await axios.put(`https://lydian-ossified-cesium.glitch.me/workers/${updatedWorker.id}`, updatedWorker);
         const index = this.workers.findIndex((worker) => worker.id === updatedWorker.id);
         if (index !== -1) this.workers.splice(index, 1, updatedWorker);
         const office = this.offices.find(office => office.id === updatedWorker.officeId);
@@ -138,7 +139,7 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async deleteWorker(workerId) {
       try {
-        await axios.delete(`http://localhost:5000/workers/${workerId}`);
+        await axios.delete(`https://lydian-ossified-cesium.glitch.me/workers/${workerId}`);
         this.workers = this.workers.filter((worker) => worker.id !== workerId);
         this.offices.forEach(office => {
           office.workers = office.workers.filter(worker => worker.id !== workerId);
