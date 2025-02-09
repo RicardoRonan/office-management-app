@@ -280,4 +280,17 @@ ul {
   line-height: 1.5rem;
   font-weight: 400;
 }
+@media (min-width: 315px) and (max-width: 375px) {
+  .worker-div[data-v-c2148e8a] {
+  width: 18.438rem;
+}
+#search-staff-member-div {
+  width: 18.25rem;
+}
+
+#staff-members-heading-div{
+  width: 20.438rem;
+}
+
+}
 </style>

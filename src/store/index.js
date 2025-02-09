@@ -20,7 +20,7 @@ export const useOfficeStore = defineStore("officeStore", {
       { "name": "Pale Lilac", "rgba": "rgba(219, 186, 221, 0.5)" },
       { "name": "Hollywood Cerise", "rgba": "rgba(255, 0, 110, 0.5)" },
       { "name": "Magic Mint", "rgba": "rgba(169, 240, 209, 0.5)" },
-      { "name": "Islamic Green", "rgba": "rgba(0, 180, 2, 0.5)" },
+      { "name": "Mint Green", "rgba": "rgba(0, 180, 2, 0.5)" },
       { "name": "Steel Blue", "rgba": "rgba(72, 157, 218, 0.5)" },
       { "name": "Bright Navy Blue", "rgba": "rgba(0, 114, 232, 0.5)" },
       { "name": "Electric Purple", "rgba": "rgba(131, 56, 236, 0.5)" }

@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 #staff-members-amount {
   font-weight: 700;
 }
@@ -159,5 +159,18 @@ span {
   gap: 0.75rem;
   align-items: center;
   padding: 0.5rem;
+}
+@media (min-width: 315px) and (max-width: 375px) {
+  .office-card {
+    width: 18.25rem;
+  }
+
+  .heading-div {
+    width: 15.25rem;
+  }
+
+  .staff-count-div {
+    width: 15.25rem;
+  }
 }
 </style>
