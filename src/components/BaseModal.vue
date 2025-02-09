@@ -54,4 +54,9 @@ export default {
   font-size: 24px;
   cursor: pointer;
 }
+@media (min-width: 315px) and (max-width: 375px) {
+  .modal {
+  width: 16.563rem;
+  }
+}
 </style>

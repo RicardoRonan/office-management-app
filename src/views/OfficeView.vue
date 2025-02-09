@@ -73,7 +73,7 @@
         :officeId="officeId"
         :workerId="workerId"
         :show="showSecondModal"
-        @close="showSecondModal = false, showFirstModal = false"
+        @close="(showSecondModal = false), (showFirstModal = false)"
       />
 
       <button @click="addWorker" class="add-button">
@@ -165,7 +165,6 @@ export default {
     openWorkerEditModal(workerId) {
       this.workerId = workerId;
       this.showSecondModal = true;
-      console.log("Editing Worker ID:", workerId);
     },
     addWorker() {
       this.workerId = null;
@@ -181,7 +180,6 @@ export default {
     },
     confirmDelete() {
       if (this.workerId) {
-        console.log("Deleting Worker ID:", this.workerId);
         this.officeStore.deleteWorker(this.workerId);
         this.deleteWorkerModal = false;
         this.showFirstModal = false;
@@ -281,16 +279,15 @@ ul {
   font-weight: 400;
 }
 @media (min-width: 315px) and (max-width: 375px) {
-  .worker-div[data-v-c2148e8a] {
-  width: 18.438rem;
-}
-#search-staff-member-div {
-  width: 18.25rem;
-}
+  .worker-div {
+    width: 17.438rem;
+  }
+  #search-staff-member-div {
+    width: 18.25rem;
+  }
 
-#staff-members-heading-div{
-  width: 20.438rem;
-}
-
+  #staff-members-heading-div {
+    width: 19.438rem;
+  }
 }
 </style>

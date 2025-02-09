@@ -217,4 +217,13 @@ export default {
 #delete-office {
   margin: 0.75rem 0rem 0rem 0rem;
 }
+@media (min-width: 315px) and (max-width: 375px) {
+  .office-form {
+  width: 18.25rem;
+  gap:1rem;
+}
+#color-div{
+gap: 0.5rem;
+}
+}
 </style>

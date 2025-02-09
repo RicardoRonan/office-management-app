@@ -3,7 +3,6 @@
     class="office-card"
     :style="{ borderLeft: '0.75rem solid ' + office.OfficeColor }"
   >
-    <!-- Office Name Display -->
     <div class="heading-div">
       <h3 class="heading">{{ office.OfficeName }}</h3>
       <router-link :to="`/office/${office.id}/edit`">
@@ -13,7 +12,6 @@
       </router-link>
     </div>
 
-    <!-- Staff Count -->
     <div class="staff-count-div">
       <img src="../assets/people.svg" alt="people-group" class="icon" />
       <p class="body-text">
@@ -21,7 +19,6 @@
         Members in Office
       </p>
     </div>
-    <!-- More Info Accordion -->
     <div class="accordion">
       <button
         @click="toggleAccordion(office.id)"
@@ -73,10 +70,10 @@ export default {
   methods: {
     getOffices: (state) => {
       return state.offices.map((office) => ({
-        ...office, 
+        ...office,
         workers: state.workers.filter(
           (worker) => worker.officeId === office.id
-        ), 
+        ),
       }));
     },
     deleteOffice(officeId) {
@@ -89,9 +86,9 @@ export default {
     toggleAccordion(officeId) {
       const index = this.openAccordions.indexOf(officeId);
       if (index === -1) {
-        this.openAccordions.push(officeId); 
+        this.openAccordions.push(officeId);
       } else {
-        this.openAccordions.splice(index, 1); 
+        this.openAccordions.splice(index, 1);
       }
     },
 
@@ -105,7 +102,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 #staff-members-amount {
   font-weight: 700;
 }
@@ -161,6 +158,9 @@ span {
   padding: 0.5rem;
 }
 @media (min-width: 315px) and (max-width: 375px) {
+  .accordion {
+    width: 17.25rem;
+  }
   .office-card {
     width: 18.25rem;
   }

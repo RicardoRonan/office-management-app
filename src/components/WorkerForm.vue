@@ -97,7 +97,7 @@ export default {
   props: {
     workerId: { type: [String, Number], default: null },
     show: { type: Boolean, required: true },
-    officeId: { type:  [Number], required: true },
+    officeId: { type: [Number], required: true },
   },
   data() {
     return {
@@ -125,15 +125,17 @@ export default {
       console.log("Looking for office with ID:", this.officeId);
       console.log("Looking for worker with ID:", this.workerId);
       if (this.isEdit && this.workerId) {
-      const existingWorker = this.officeStore.workers.find(
-        worker => worker.workerId === Number(this.workerId) && worker.officeId === Number(this.officeId)
-      );
-      console.log("Worker found:", existingWorker);
-      this.worker = existingWorker
-        ? { ...existingWorker }
-        : this.initializeWorker();
+        const existingWorker = this.officeStore.workers.find(
+          (worker) =>
+            worker.workerId === Number(this.workerId) &&
+            worker.officeId === Number(this.officeId)
+        );
+        console.log("Worker found:", existingWorker);
+        this.worker = existingWorker
+          ? { ...existingWorker }
+          : this.initializeWorker();
       } else {
-      this.worker = this.initializeWorker();
+        this.worker = this.initializeWorker();
       }
     },
     initializeWorker() {
@@ -164,9 +166,12 @@ export default {
           workerId: Number(this.workerId),
         });
       } else {
-        const nextWorkerId = this.officeStore.workers.length > 0 
-          ? Math.max(...this.officeStore.workers.map(worker => worker.workerId)) + 1 
-          : 1;
+        const nextWorkerId =
+          this.officeStore.workers.length > 0
+            ? Math.max(
+                ...this.officeStore.workers.map((worker) => worker.workerId)
+              ) + 1
+            : 1;
         this.officeStore.addWorker({
           ...this.worker,
           workerId: nextWorkerId,
@@ -177,22 +182,22 @@ export default {
     },
   },
   watch: {
-  workerId(newVal) {
-    console.log("Worker ID changed:", newVal);
-    if (newVal) {
-      this.loadWorker();
-    } else {
-      this.worker = this.initializeWorker();
-    }
+    workerId(newVal) {
+      console.log("Worker ID changed:", newVal);
+      if (newVal) {
+        this.loadWorker();
+      } else {
+        this.worker = this.initializeWorker();
+      }
+    },
+    show(newShow) {
+      if (newShow) {
+        this.loadWorker();
+      } else {
+        this.worker = this.initializeWorker();
+      }
+    },
   },
-  show(newShow) {
-    if (newShow) {
-      this.loadWorker();
-    } else {
-      this.worker = this.initializeWorker();
-    }
-  },
-},
 };
 </script>
 <style scoped>
@@ -270,5 +275,13 @@ export default {
 }
 #choose-avatar {
   font-weight: 600;
+}
+@media (min-width: 315px) and (max-width: 375px) {
+  .modal-header{
+width: 17.563rem;
+}
+  #avatar-div {
+    gap: 1rem;
+  }
 }
 </style>

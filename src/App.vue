@@ -208,13 +208,14 @@ button {
   right: 2rem;
   width: 4rem;
   height: 4rem;
-  background-color: var(--bg-color);
+  background-color:transparent;
 }
 .buttons-div {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 .input-div {
   display: flex;
@@ -284,6 +285,8 @@ button {
   bottom: 6rem;
   right: 4rem;
 }
-
+.modal-header{
+width: 17.563rem;
+}
 }
 </style>
