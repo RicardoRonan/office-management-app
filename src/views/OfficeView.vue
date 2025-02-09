@@ -156,7 +156,7 @@ export default {
       await this.officeStore.loadState();
     },
     goBack() {
-      this.$router.go(-1);
+      this.$router.push({ name: "home" });
     },
     openWorkerMenu(workerId) {
       this.selectedWorkerId = workerId;

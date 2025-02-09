@@ -77,9 +77,13 @@
     <BaseModal :show="deleteOfficeModal" @close="closeDeleteModal">
       <div class="confirm-delete-modal">
         <div class="modal-header">
-          <button  @click="closeDeleteModal" class="back-button">
-          <img src="../assets/arrow-left.svg" alt="back-button" class="icon" />
-        </button>
+          <button @click="closeDeleteModal" class="back-button">
+            <img
+              src="../assets/arrow-left.svg"
+              alt="back-button"
+              class="icon"
+            />
+          </button>
           <h3 class="heading">Are You Sure You Want To Delete This Office?</h3>
         </div>
         <div class="buttons-div">
@@ -134,7 +138,11 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.go(-1);
+      if (this.isEdit) {
+        this.$router.push({ name: "office", params: { id: this.id } });
+      } else {
+        this.$router.push({ name: "home" });
+      }
     },
     submitForm() {
       const officeStore = useOfficeStore();
@@ -142,7 +150,10 @@ export default {
       if (this.isEdit) {
         officeStore.editOffice(this.office);
       } else {
-        const maxId = Math.max(...officeStore.getOffices.map(office => office.id), 0);
+        const maxId = Math.max(
+          ...officeStore.getOffices.map((office) => office.id),
+          0
+        );
         this.office.id = maxId + 1; // Ensure the new office gets a unique id
         officeStore.addOffice(this.office);
       }
@@ -165,16 +176,16 @@ export default {
     },
     deleteOffice() {
       console.log("Delete button clicked");
-      this.deleteOfficeModal = true; 
+      this.deleteOfficeModal = true;
     },
     confirmDelete() {
       const officeStore = useOfficeStore();
-      officeStore.deleteOffice(this.office.id); 
-      this.closeDeleteModal(); 
-      this.$router.push("/"); 
+      officeStore.deleteOffice(this.office.id);
+      this.closeDeleteModal();
+      this.$router.push("/");
     },
     closeDeleteModal() {
-      this.deleteOfficeModal = false; 
+      this.deleteOfficeModal = false;
     },
     selectColor(color) {
       this.office.OfficeColor = color;
@@ -219,11 +230,11 @@ export default {
 }
 @media (min-width: 315px) and (max-width: 375px) {
   .office-form {
-  width: 18.25rem;
-  gap:1rem;
-}
-#color-div{
-gap: 0.5rem;
-}
+    width: 18.25rem;
+    gap: 1rem;
+  }
+  #color-div {
+    gap: 0.5rem;
+  }
 }
 </style>
