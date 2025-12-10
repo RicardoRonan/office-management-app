@@ -74,6 +74,8 @@ export const useOfficeStore = defineStore("officeStore", {
         });
       } catch (error) {
         console.error("Error loading state from db.json:", error);
+        // Re-throw the error so components can handle it
+        throw error;
       }
     },
 
