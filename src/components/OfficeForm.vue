@@ -150,11 +150,7 @@ export default {
       if (this.isEdit) {
         officeStore.editOffice(this.office);
       } else {
-        const maxId = Math.max(
-          ...officeStore.getOffices.map((office) => office.id),
-          0
-        );
-        this.office.id = maxId + 1; // Ensure the new office gets a unique id
+        // Let JSON Server auto-generate the ID
         officeStore.addOffice(this.office);
       }
       this.$router.push("/");

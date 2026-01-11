@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import apiConfig from "@/config/api";
 import astronautPeace from "@/assets/staff-avatar/astronaut-peace-emote.svg";
 import astronautSuper from "@/assets/staff-avatar/astronaut-super.svg";
 import astronautRocket from "@/assets/staff-avatar/astronaut-sitting-on-rocket.svg";
@@ -57,8 +58,8 @@ export const useOfficeStore = defineStore("officeStore", {
     async loadState() {
       try {
         const [officesRes, workersRes] = await Promise.all([
-          axios.get("https://lydian-ossified-cesium.glitch.me/offices"),
-          axios.get("https://lydian-ossified-cesium.glitch.me/workers"),
+          axios.get(apiConfig.endpoints.offices),
+          axios.get(apiConfig.endpoints.workers),
         ]);
 
         this.offices = officesRes.data.map(office => ({
@@ -85,35 +86,56 @@ export const useOfficeStore = defineStore("officeStore", {
 
     async addOffice(office) {
       try {
-        const response = await axios.post("https://lydian-ossified-cesium.glitch.me/offices", office);
+        // Remove id if it's null/undefined (let JSON Server generate it)
+        const officeToAdd = { ...office };
+        if (!officeToAdd.id) {
+          delete officeToAdd.id;
+        }
+        const response = await axios.post(apiConfig.endpoints.offices, officeToAdd);
         this.offices.push({ ...response.data, workers: [] });
       } catch (error) {
         console.error("Error adding office:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
 
     async editOffice(updatedOffice) {
       try {
-        await axios.put(`https://lydian-ossified-cesium.glitch.me/offices/${updatedOffice.id}`, updatedOffice);
+        if (!updatedOffice.id) {
+          console.error("Error updating office: Office ID is missing");
+          return;
+        }
+        await axios.put(`${apiConfig.endpoints.offices}/${updatedOffice.id}`, updatedOffice);
         const index = this.offices.findIndex((office) => office.id === updatedOffice.id);
         if (index !== -1) this.offices.splice(index, 1, updatedOffice);
       } catch (error) {
         console.error("Error updating office:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
 
     async deleteOffice(officeId) {
       try {
-        await axios.delete(`https://lydian-ossified-cesium.glitch.me/offices/${officeId}`);
+        if (!officeId) {
+          console.error("Error deleting office: Office ID is missing");
+          return;
+        }
+        await axios.delete(`${apiConfig.endpoints.offices}/${officeId}`);
         this.offices = this.offices.filter((office) => office.id !== officeId);
       } catch (error) {
         console.error("Error deleting office:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
 
     async addWorker(worker) {
       try {
-        const response = await axios.post("https://lydian-ossified-cesium.glitch.me/workers", worker);
+        // Remove id if it's null/undefined (let JSON Server generate it)
+        const workerToAdd = { ...worker };
+        if (!workerToAdd.id) {
+          delete workerToAdd.id;
+        }
+        const response = await axios.post(apiConfig.endpoints.workers, workerToAdd);
         this.workers.push(response.data);
         const office = this.offices.find(office => office.id === worker.officeId);
         if (office) {
@@ -121,12 +143,18 @@ export const useOfficeStore = defineStore("officeStore", {
         }
       } catch (error) {
         console.error("Error adding worker:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
 
     async editWorker(updatedWorker) {
       try {
-        await axios.put(`https://lydian-ossified-cesium.glitch.me/workers/${updatedWorker.id}`, updatedWorker);
+        // Ensure we have a valid ID
+        if (!updatedWorker.id) {
+          console.error("Error updating worker: Worker ID is missing");
+          return;
+        }
+        await axios.put(`${apiConfig.endpoints.workers}/${updatedWorker.id}`, updatedWorker);
         const index = this.workers.findIndex((worker) => worker.id === updatedWorker.id);
         if (index !== -1) this.workers.splice(index, 1, updatedWorker);
         const office = this.offices.find(office => office.id === updatedWorker.officeId);
@@ -136,18 +164,24 @@ export const useOfficeStore = defineStore("officeStore", {
         }
       } catch (error) {
         console.error("Error updating worker:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
 
     async deleteWorker(workerId) {
       try {
-        await axios.delete(`https://lydian-ossified-cesium.glitch.me/workers/${workerId}`);
+        if (!workerId) {
+          console.error("Error deleting worker: Worker ID is missing");
+          return;
+        }
+        await axios.delete(`${apiConfig.endpoints.workers}/${workerId}`);
         this.workers = this.workers.filter((worker) => worker.id !== workerId);
         this.offices.forEach(office => {
           office.workers = office.workers.filter(worker => worker.id !== workerId);
         });
       } catch (error) {
         console.error("Error deleting worker:", error);
+        throw error; // Re-throw so UI can handle it
       }
     },
   },

@@ -1,9 +1,11 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click.self="close">
-    <div class="modal">
-      <slot></slot>
+  <transition name="modal-overlay">
+    <div v-if="show" class="modal-overlay" @click.self="close">
+      <div class="modal">
+        <slot></slot>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -44,6 +46,63 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+/* Modal Overlay Transitions */
+.modal-overlay-enter-active {
+  transition: opacity 0.2s ease-out;
+}
+
+.modal-overlay-leave-active {
+  transition: opacity 0.15s ease-in;
+}
+
+.modal-overlay-enter-from,
+.modal-overlay-leave-to {
+  opacity: 0;
+}
+
+/* Modal Content Animations (child of overlay) */
+.modal-overlay-enter-active .modal {
+  animation: modalSlideIn 0.25s ease-out;
+}
+
+.modal-overlay-leave-active .modal {
+  animation: modalSlideOut 0.15s ease-in;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay-enter-active,
+  .modal-overlay-leave-active {
+    transition: none;
+  }
+  .modal-overlay-enter-active .modal,
+  .modal-overlay-leave-active .modal {
+    animation: none;
+  }
 }
 
 .close-btn {

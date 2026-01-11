@@ -1,0 +1,796 @@
+{
+  "offices": [
+    {
+      "id": 1,
+      "OfficeName": "Downtown Headquarters",
+      "PhysicalAddress": "123 Main Street, New York, NY 10001",
+      "EmailAddress": "downtown@company.com",
+      "PhoneNumber": "+1 (212) 555-0101",
+      "MaximumCapacity": 50,
+      "OfficeColor": "rgba(72, 157, 218, 0.5)"
+    },
+    {
+      "id": 2,
+      "OfficeName": "West Coast Branch",
+      "PhysicalAddress": "456 Sunset Boulevard, Los Angeles, CA 90028",
+      "EmailAddress": "westcoast@company.com",
+      "PhoneNumber": "+1 (323) 555-0202",
+      "MaximumCapacity": 35,
+      "OfficeColor": "rgba(255, 190, 11, 0.5)"
+    },
+    {
+      "id": 3,
+      "OfficeName": "Tech Innovation Hub",
+      "PhysicalAddress": "789 Silicon Valley Drive, San Francisco, CA 94105",
+      "EmailAddress": "techhub@company.com",
+      "PhoneNumber": "+1 (415) 555-0303",
+      "MaximumCapacity": 75,
+      "OfficeColor": "rgba(0, 180, 2, 0.5)"
+    },
+    {
+      "id": 4,
+      "OfficeName": "Chicago Regional Office",
+      "PhysicalAddress": "321 Michigan Avenue, Chicago, IL 60601",
+      "EmailAddress": "chicago@company.com",
+      "PhoneNumber": "+1 (312) 555-0404",
+      "MaximumCapacity": 40,
+      "OfficeColor": "rgba(251, 86, 7, 0.5)"
+    },
+    {
+      "id": 5,
+      "OfficeName": "Boston Research Center",
+      "PhysicalAddress": "654 Harvard Square, Cambridge, MA 02138",
+      "EmailAddress": "boston@company.com",
+      "PhoneNumber": "+1 (617) 555-0505",
+      "MaximumCapacity": 30,
+      "OfficeColor": "rgba(131, 56, 236, 0.5)"
+    },
+    {
+      "id": 6,
+      "OfficeName": "Seattle Operations",
+      "PhysicalAddress": "987 Pike Street, Seattle, WA 98101",
+      "EmailAddress": "seattle@company.com",
+      "PhoneNumber": "+1 (206) 555-0606",
+      "MaximumCapacity": 45,
+      "OfficeColor": "rgba(169, 240, 209, 0.5)"
+    },
+    {
+      "id": 7,
+      "OfficeName": "Austin Development Lab",
+      "PhysicalAddress": "147 South Congress Avenue, Austin, TX 78704",
+      "EmailAddress": "austin@company.com",
+      "PhoneNumber": "+1 (512) 555-0707",
+      "MaximumCapacity": 60,
+      "OfficeColor": "rgba(0, 114, 232, 0.5)"
+    },
+    {
+      "id": 8,
+      "OfficeName": "Miami Sales Office",
+      "PhysicalAddress": "258 Ocean Drive, Miami Beach, FL 33139",
+      "EmailAddress": "miami@company.com",
+      "PhoneNumber": "+1 (305) 555-0808",
+      "MaximumCapacity": 25,
+      "OfficeColor": "rgba(255, 155, 113, 0.5)"
+    },
+    {
+      "id": 9,
+      "OfficeName": "Denver Mountain View",
+      "PhysicalAddress": "369 Colfax Avenue, Denver, CO 80204",
+      "EmailAddress": "denver@company.com",
+      "PhoneNumber": "+1 (303) 555-0909",
+      "MaximumCapacity": 20,
+      "OfficeColor": "rgba(219, 186, 221, 0.5)"
+    },
+    {
+      "id": 10,
+      "OfficeName": "Portland Creative Studio",
+      "PhysicalAddress": "741 Pearl District, Portland, OR 97209",
+      "EmailAddress": "portland@company.com",
+      "PhoneNumber": "+1 (503) 555-1010",
+      "MaximumCapacity": 28,
+      "OfficeColor": "rgba(255, 0, 110, 0.5)"
+    }
+  ],
+  "workers": [
+    {
+      "id": 1,
+      "officeId": 1,
+      "FirstName": "Sarah",
+      "LastName": "Johnson",
+      "Avatar": "/img/astronaut-peace-emote.b1db5dbe.svg"
+    },
+    {
+      "id": 2,
+      "officeId": 1,
+      "FirstName": "Michael",
+      "LastName": "Chen",
+      "Avatar": "/img/astronaut-super.6f5444cf.svg"
+    },
+    {
+      "id": 3,
+      "officeId": 1,
+      "FirstName": "Emily",
+      "LastName": "Rodriguez",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 4,
+      "officeId": 1,
+      "FirstName": "David",
+      "LastName": "Kim",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 5,
+      "officeId": 1,
+      "FirstName": "Jessica",
+      "LastName": "Williams",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 6,
+      "officeId": 1,
+      "FirstName": "James",
+      "LastName": "Brown",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 7,
+      "officeId": 1,
+      "FirstName": "Amanda",
+      "LastName": "Davis",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 8,
+      "officeId": 1,
+      "FirstName": "Robert",
+      "LastName": "Miller",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 9,
+      "officeId": 1,
+      "FirstName": "Lisa",
+      "LastName": "Wilson",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 10,
+      "officeId": 1,
+      "FirstName": "Christopher",
+      "LastName": "Moore",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 11,
+      "officeId": 2,
+      "FirstName": "Jennifer",
+      "LastName": "Taylor",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 12,
+      "officeId": 2,
+      "FirstName": "Daniel",
+      "LastName": "Anderson",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 13,
+      "officeId": 2,
+      "FirstName": "Michelle",
+      "LastName": "Thomas",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 14,
+      "officeId": 2,
+      "FirstName": "Matthew",
+      "LastName": "Jackson",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 15,
+      "officeId": 2,
+      "FirstName": "Nicole",
+      "LastName": "White",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 16,
+      "officeId": 2,
+      "FirstName": "Andrew",
+      "LastName": "Harris",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 17,
+      "officeId": 2,
+      "FirstName": "Stephanie",
+      "LastName": "Martin",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 18,
+      "officeId": 2,
+      "FirstName": "Ryan",
+      "LastName": "Thompson",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 19,
+      "officeId": 2,
+      "FirstName": "Lauren",
+      "LastName": "Garcia",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 20,
+      "officeId": 2,
+      "FirstName": "Kevin",
+      "LastName": "Martinez",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 21,
+      "officeId": 3,
+      "FirstName": "Rachel",
+      "LastName": "Robinson",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 22,
+      "officeId": 3,
+      "FirstName": "Brandon",
+      "LastName": "Clark",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 23,
+      "officeId": 3,
+      "FirstName": "Ashley",
+      "LastName": "Rodriguez",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 24,
+      "officeId": 3,
+      "FirstName": "Justin",
+      "LastName": "Lewis",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 25,
+      "officeId": 3,
+      "FirstName": "Brittany",
+      "LastName": "Lee",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 26,
+      "officeId": 3,
+      "FirstName": "Tyler",
+      "LastName": "Walker",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 27,
+      "officeId": 3,
+      "FirstName": "Megan",
+      "LastName": "Hall",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 28,
+      "officeId": 3,
+      "FirstName": "Jordan",
+      "LastName": "Allen",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 29,
+      "officeId": 3,
+      "FirstName": "Samantha",
+      "LastName": "Young",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 30,
+      "officeId": 3,
+      "FirstName": "Nathan",
+      "LastName": "King",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 31,
+      "officeId": 4,
+      "FirstName": "Olivia",
+      "LastName": "Wright",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 32,
+      "officeId": 4,
+      "FirstName": "Jonathan",
+      "LastName": "Lopez",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 33,
+      "officeId": 4,
+      "FirstName": "Hannah",
+      "LastName": "Hill",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 34,
+      "officeId": 4,
+      "FirstName": "Benjamin",
+      "LastName": "Scott",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 35,
+      "officeId": 4,
+      "FirstName": "Victoria",
+      "LastName": "Green",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 36,
+      "officeId": 4,
+      "FirstName": "Alexander",
+      "LastName": "Adams",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 37,
+      "officeId": 4,
+      "FirstName": "Grace",
+      "LastName": "Baker",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 38,
+      "officeId": 4,
+      "FirstName": "Samuel",
+      "LastName": "Gonzalez",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 39,
+      "officeId": 4,
+      "FirstName": "Chloe",
+      "LastName": "Nelson",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 40,
+      "officeId": 4,
+      "FirstName": "Joseph",
+      "LastName": "Carter",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 41,
+      "officeId": 5,
+      "FirstName": "Emma",
+      "LastName": "Mitchell",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 42,
+      "officeId": 5,
+      "FirstName": "William",
+      "LastName": "Perez",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 43,
+      "officeId": 5,
+      "FirstName": "Sophia",
+      "LastName": "Roberts",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 44,
+      "officeId": 5,
+      "FirstName": "Ethan",
+      "LastName": "Turner",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 45,
+      "officeId": 5,
+      "FirstName": "Isabella",
+      "LastName": "Phillips",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 46,
+      "officeId": 5,
+      "FirstName": "Mason",
+      "LastName": "Campbell",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 47,
+      "officeId": 5,
+      "FirstName": "Ava",
+      "LastName": "Parker",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 48,
+      "officeId": 5,
+      "FirstName": "Noah",
+      "LastName": "Evans",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 49,
+      "officeId": 5,
+      "FirstName": "Madison",
+      "LastName": "Edwards",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 50,
+      "officeId": 5,
+      "FirstName": "Lucas",
+      "LastName": "Collins",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 51,
+      "officeId": 6,
+      "FirstName": "Abigail",
+      "LastName": "Stewart",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 52,
+      "officeId": 6,
+      "FirstName": "Aiden",
+      "LastName": "Sanchez",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 53,
+      "officeId": 6,
+      "FirstName": "Elizabeth",
+      "LastName": "Morris",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 54,
+      "officeId": 6,
+      "FirstName": "Carter",
+      "LastName": "Rogers",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 55,
+      "officeId": 6,
+      "FirstName": "Sofia",
+      "LastName": "Reed",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 56,
+      "officeId": 6,
+      "FirstName": "Logan",
+      "LastName": "Cook",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 57,
+      "officeId": 6,
+      "FirstName": "Avery",
+      "LastName": "Morgan",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 58,
+      "officeId": 6,
+      "FirstName": "Jackson",
+      "LastName": "Bell",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 59,
+      "officeId": 6,
+      "FirstName": "Scarlett",
+      "LastName": "Murphy",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 60,
+      "officeId": 6,
+      "FirstName": "Liam",
+      "LastName": "Bailey",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 61,
+      "officeId": 7,
+      "FirstName": "Harper",
+      "LastName": "Rivera",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 62,
+      "officeId": 7,
+      "FirstName": "Owen",
+      "LastName": "Cooper",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 63,
+      "officeId": 7,
+      "FirstName": "Aria",
+      "LastName": "Richardson",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 64,
+      "officeId": 7,
+      "FirstName": "Wyatt",
+      "LastName": "Cox",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 65,
+      "officeId": 7,
+      "FirstName": "Lily",
+      "LastName": "Howard",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 66,
+      "officeId": 7,
+      "FirstName": "Grayson",
+      "LastName": "Ward",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 67,
+      "officeId": 7,
+      "FirstName": "Natalie",
+      "LastName": "Torres",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 68,
+      "officeId": 7,
+      "FirstName": "Henry",
+      "LastName": "Peterson",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 69,
+      "officeId": 7,
+      "FirstName": "Zoe",
+      "LastName": "Gray",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 70,
+      "officeId": 7,
+      "FirstName": "Sebastian",
+      "LastName": "Ramirez",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 71,
+      "officeId": 8,
+      "FirstName": "Addison",
+      "LastName": "James",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 72,
+      "officeId": 8,
+      "FirstName": "Caleb",
+      "LastName": "Watson",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 73,
+      "officeId": 8,
+      "FirstName": "Ella",
+      "LastName": "Brooks",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 74,
+      "officeId": 8,
+      "FirstName": "Isaac",
+      "LastName": "Kelly",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 75,
+      "officeId": 8,
+      "FirstName": "Aubrey",
+      "LastName": "Sanders",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 76,
+      "officeId": 8,
+      "FirstName": "Luke",
+      "LastName": "Price",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 77,
+      "officeId": 8,
+      "FirstName": "Layla",
+      "LastName": "Bennett",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 78,
+      "officeId": 8,
+      "FirstName": "Aaron",
+      "LastName": "Wood",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 79,
+      "officeId": 8,
+      "FirstName": "Penelope",
+      "LastName": "Barnes",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 80,
+      "officeId": 8,
+      "FirstName": "Evan",
+      "LastName": "Ross",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 81,
+      "officeId": 9,
+      "FirstName": "Stella",
+      "LastName": "Henderson",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 82,
+      "officeId": 9,
+      "FirstName": "Connor",
+      "LastName": "Coleman",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 83,
+      "officeId": 9,
+      "FirstName": "Hazel",
+      "LastName": "Jenkins",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 84,
+      "officeId": 9,
+      "FirstName": "Landon",
+      "LastName": "Perry",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 85,
+      "officeId": 9,
+      "FirstName": "Violet",
+      "LastName": "Powell",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 86,
+      "officeId": 9,
+      "FirstName": "Adrian",
+      "LastName": "Long",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 87,
+      "officeId": 9,
+      "FirstName": "Aurora",
+      "LastName": "Patterson",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 88,
+      "officeId": 9,
+      "FirstName": "Hunter",
+      "LastName": "Hughes",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 89,
+      "officeId": 9,
+      "FirstName": "Savannah",
+      "LastName": "Flores",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 90,
+      "officeId": 9,
+      "FirstName": "Levi",
+      "LastName": "Washington",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    },
+    {
+      "id": 91,
+      "officeId": 10,
+      "FirstName": "Audrey",
+      "LastName": "Butler",
+      "Avatar": "/img/astronaut-bad-boy.svg"
+    },
+    {
+      "id": 92,
+      "officeId": 10,
+      "FirstName": "Jaxon",
+      "LastName": "Simmons",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 93,
+      "officeId": 10,
+      "FirstName": "Brooklyn",
+      "LastName": "Foster",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 94,
+      "officeId": 10,
+      "FirstName": "Dominic",
+      "LastName": "Gonzales",
+      "Avatar": "/img/astronaut-sitting-on-rocket.svg"
+    },
+    {
+      "id": 95,
+      "officeId": 10,
+      "FirstName": "Bella",
+      "LastName": "Bryant",
+      "Avatar": "/img/astronaut-hanging-on-moon.svg"
+    },
+    {
+      "id": 96,
+      "officeId": 10,
+      "FirstName": "Colton",
+      "LastName": "Alexander",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 97,
+      "officeId": 10,
+      "FirstName": "Lucy",
+      "LastName": "Russell",
+      "Avatar": "/img/astronaut-super.svg"
+    },
+    {
+      "id": 98,
+      "officeId": 10,
+      "FirstName": "Parker",
+      "LastName": "Griffin",
+      "Avatar": "/img/astronaut-peace-emote.svg"
+    },
+    {
+      "id": 99,
+      "officeId": 10,
+      "FirstName": "Paisley",
+      "LastName": "Diaz",
+      "Avatar": "/img/astronaut-balloons.svg"
+    },
+    {
+      "id": 100,
+      "officeId": 10,
+      "FirstName": "Xavier",
+      "LastName": "Hayes",
+      "Avatar": "/img/astronaut-holding-jupiter.svg"
+    }
+  ]
+}

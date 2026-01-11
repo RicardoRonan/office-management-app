@@ -69,16 +69,20 @@ export default {
     viewOffice(office) {
       this.$router.push({ name: "office", params: { id: office.id } });
     },
-    editWorker(worker) {
+    // eslint-disable-next-line no-unused-vars
+    editWorker(_worker) {
       // Handle edit worker if needed
     },
-    deleteWorker(workerId) {
+    // eslint-disable-next-line no-unused-vars
+    deleteWorker(_workerId) {
       // Handle delete worker if needed
     },
-    addWorker(officeId) {
+    // eslint-disable-next-line no-unused-vars
+    addWorker(_officeId) {
       // Handle add worker if needed
     },
-    deleteOffice(officeId) {
+    // eslint-disable-next-line no-unused-vars
+    deleteOffice(_officeId) {
       // Handle delete office if needed
     }
   }

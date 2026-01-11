@@ -18,42 +18,43 @@
       </div>
 
       <form @submit.prevent="submitForm">
-        <div v-if="currentStep === 1">
-          <div class="input-div">
-            <input
-              v-model="worker.FirstName"
-              class="input"
-              type="text"
-              placeholder="First Name"
-              required
-            />
-            <input
-              v-model="worker.LastName"
-              class="input"
-              type="text"
-              placeholder="Last Name"
-              required
-            />
+        <transition :name="stepTransition" mode="out-in">
+          <div v-if="currentStep === 1" key="step1">
+            <div class="input-div">
+              <input
+                v-model="worker.FirstName"
+                class="input"
+                type="text"
+                placeholder="First Name"
+                required
+              />
+              <input
+                v-model="worker.LastName"
+                class="input"
+                type="text"
+                placeholder="Last Name"
+                required
+              />
+            </div>
+
+            <div class="step-indicator">
+              <div
+                class="dot"
+                :class="{ active: currentStep === 1 }"
+                @click="setStep(1)"
+              ></div>
+              <div
+                class="dot"
+                :class="{ active: currentStep === 2 }"
+                @click="setStep(2)"
+              ></div>
+            </div>
+            <div class="modal-button-div">
+              <button class="primary-button" @click="nextStep">Next</button>
+            </div>
           </div>
 
-          <div class="step-indicator">
-            <div
-              class="dot"
-              :class="{ active: currentStep === 1 }"
-              @click="setStep(1)"
-            ></div>
-            <div
-              class="dot"
-              :class="{ active: currentStep === 2 }"
-              @click="setStep(2)"
-            ></div>
-          </div>
-          <div class="modal-button-div">
-            <button class="primary-button" @click="nextStep">Next</button>
-          </div>
-        </div>
-
-        <div v-if="currentStep === 2">
+          <div v-else-if="currentStep === 2" key="step2">
           <label class="sub-heading" for="avatar">Avatar</label>
           <div id="avatar-div">
             <img
@@ -82,7 +83,8 @@
               {{ isEdit ? "Update Staff Member" : "Add Staff Member" }}
             </button>
           </div>
-        </div>
+          </div>
+        </transition>
       </form>
     </div>
   </BaseModal>
@@ -104,6 +106,7 @@ export default {
       currentStep: 1,
       worker: null,
       officeStore: useOfficeStore(),
+      previousStep: 1,
     };
   },
   computed: {
@@ -116,6 +119,9 @@ export default {
     offices() {
       return this.officeStore.offices;
     },
+    stepTransition() {
+      return this.currentStep > this.previousStep ? 'slide-left' : 'slide-right';
+    },
   },
   created() {
     this.loadWorker();
@@ -127,7 +133,7 @@ export default {
       if (this.isEdit && this.workerId) {
         const existingWorker = this.officeStore.workers.find(
           (worker) =>
-            worker.workerId === Number(this.workerId) &&
+            worker.id === Number(this.workerId) &&
             worker.officeId === Number(this.officeId)
         );
         console.log("Worker found:", existingWorker);
@@ -140,7 +146,7 @@ export default {
     },
     initializeWorker() {
       return {
-        workerId: null,
+        id: null,
         officeId: parseInt(this.officeId, 10),
         FirstName: "",
         LastName: "",
@@ -148,13 +154,20 @@ export default {
       };
     },
     setStep(step) {
+      this.previousStep = this.currentStep;
       this.currentStep = step;
     },
     nextStep() {
-      if (this.currentStep < 2) this.currentStep++;
+      if (this.currentStep < 2) {
+        this.previousStep = this.currentStep;
+        this.currentStep++;
+      }
     },
     goBack() {
-      if (this.currentStep > 1) this.currentStep--;
+      if (this.currentStep > 1) {
+        this.previousStep = this.currentStep;
+        this.currentStep--;
+      }
     },
     selectAvatar(avatar) {
       this.worker.Avatar = avatar;
@@ -163,18 +176,12 @@ export default {
       if (this.isEdit) {
         this.officeStore.editWorker({
           ...this.worker,
-          workerId: Number(this.workerId),
+          id: Number(this.workerId),
         });
       } else {
-        const nextWorkerId =
-          this.officeStore.workers.length > 0
-            ? Math.max(
-                ...this.officeStore.workers.map((worker) => worker.workerId)
-              ) + 1
-            : 1;
+        // For new workers, let JSON Server auto-generate the ID
         this.officeStore.addWorker({
           ...this.worker,
-          workerId: nextWorkerId,
           officeId: parseInt(this.worker.officeId, 10),
         });
       }
@@ -276,6 +283,44 @@ export default {
 #choose-avatar {
   font-weight: 600;
 }
+/* Step Transitions */
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.slide-left-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .slide-left-enter-active,
+  .slide-left-leave-active,
+  .slide-right-enter-active,
+  .slide-right-leave-active {
+    transition: none;
+  }
+}
+
 @media (min-width: 315px) and (max-width: 375px) {
   .modal-header{
 width: 17.563rem;

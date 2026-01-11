@@ -28,7 +28,8 @@
         More info
         <img :src="getImageSource(office.id)" alt="arrow-icon" class="icon" />
       </button>
-      <div v-show="isAccordionOpen(office.id)" class="accordion-content">
+      <transition name="accordion">
+        <div v-show="isAccordionOpen(office.id)" class="accordion-content">
         <span
           ><img src="../assets/Phone.svg" alt="phone" class="icon" />{{
             office.PhoneNumber
@@ -49,7 +50,8 @@
           ><img src="../assets/location.svg" alt="location" class="icon" />
           {{ office.PhysicalAddress }}</span
         >
-      </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -150,6 +152,37 @@ export default {
 .accordion-content {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+/* Accordion Transitions */
+.accordion-enter-active {
+  transition: max-height 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  max-height: 500px;
+}
+
+.accordion-leave-active {
+  transition: max-height 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  max-height: 500px;
+}
+
+.accordion-enter-from {
+  max-height: 0;
+  opacity: 0;
+}
+
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .accordion-enter-active,
+  .accordion-leave-active {
+    transition: none;
+    max-height: none;
+  }
 }
 span {
   display: flex;
