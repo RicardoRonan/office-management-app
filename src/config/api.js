@@ -4,15 +4,12 @@
 // For production, use your Render URL (e.g., https://your-app-name.onrender.com)
 // You can also set this via environment variable: VUE_APP_API_URL
 
-// Default to localhost for development, but you MUST update this for production
+// Default to localhost for development, production uses Render URL
 const API_BASE_URL = process.env.VUE_APP_API_URL || 
-  (process.env.NODE_ENV === 'production' ? 'YOUR_RENDER_URL' : 'http://localhost:3000');
+  (process.env.NODE_ENV === 'production' ? 'https://office-management-app.onrender.com' : 'http://localhost:3000');
 
-// Warn if using placeholder URL
-if (API_BASE_URL === 'YOUR_RENDER_URL') {
-  console.error('⚠️ WARNING: Please update the API URL in src/config/api.js or set VUE_APP_API_URL environment variable');
-  console.error('Current API URL is set to placeholder. Update it with your Render backend URL.');
-}
+// Log the current API URL for debugging
+console.log('🔌 API Base URL:', API_BASE_URL);
 
 const config = {
   baseURL: API_BASE_URL,
