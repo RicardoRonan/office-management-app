@@ -1,115 +1,137 @@
 # Office Management App
 
-## Project Setup
+A Vue.js app for managing offices and workers. Backend on Render, frontend on Netlify.
 
-This project is built using Vue.js and uses several packages for various functionalities. The JSON server backend is hosted on Render, and the frontend application is deployed on Netlify.
+---
 
-### Packages Used
+## Live Demo
 
-- Vue.js
-- Vue Router
-- Pinia (state management)
-- Axios (for HTTP requests)
-- JSON Server (hosted on Render)
-- Netlify (for frontend deployment)
+| | URL |
+|---|-----|
+| **Frontend** | [https://rics-office-management.netlify.app](https://rics-office-management.netlify.app) |
+| **Backend API** | [https://office-management-app.onrender.com](https://office-management-app.onrender.com) |
 
-### Clone the Repository
+---
 
-To clone the repository and run the project locally, follow these steps:
+## Tech Stack
 
-1. Clone the repository:
-    git clone https://github.com/RicardoRonan/office-management-app.git
+- **Frontend:** Vue.js, Vue Router, Pinia, Axios
+- **Backend:** JSON Server (Node)
+- **Hosting:** Netlify (frontend), Render (backend)
 
+---
 
-2. Navigate to the project directory:
+## Local Development
 
-    cd office-management-app
+### Prerequisites
 
+- Node.js 14+
+- npm
 
-3. Install the dependencies:
+### 1. Clone and install
 
-    npm install
+```bash
+git clone https://github.com/RicardoRonan/office-management-app.git
+cd office-management-app
+npm install
+```
 
+### 2. Run the frontend
 
-### Compiles and Hot-Reloads for Development
-
-To start the development server with hot-reloading, run:
-
+```bash
 npm run serve
+```
 
-### Running the Backend Locally
+App runs at `http://localhost:8080` (or the port shown in the terminal).
 
-1. Navigate to the backend directory:
-   ```
-   cd backend
-   ```
+### 3. Run the backend
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+In a **second terminal**:
 
-3. Start the JSON Server:
-   ```
-   npm start
-   ```
+```bash
+cd backend
+npm install
+npm start
+```
 
-   The server will run on `http://localhost:3000`
+Backend runs at `http://localhost:3000`.
 
-4. Update the API URL in `src/config/api.js` to use `http://localhost:3000` for local development, or create a `.env` file in the root directory with:
-   ```
-   VUE_APP_API_URL=http://localhost:3000
-   ```
+### 4. Point frontend to local backend (optional)
 
-### HOSTING 
+For local development the app uses `http://localhost:3000` by default. To override:
 
-#### Backend (JSON Server) - Render Setup
+```bash
+# In project root
+echo VUE_APP_API_URL=http://localhost:3000 > .env
+```
 
-The JSON server backend is hosted on Render. Follow these steps to set it up:
+---
 
-**Step 1: Create a Render Account**
-1. Go to [render.com](https://render.com)
-2. Sign up for a free account (you can use GitHub to sign in)
+## Hosting (Free)
 
-**Step 2: Create a New Web Service**
-1. Click "New +" in the dashboard
-2. Select "Web Service"
-3. Connect your GitHub repository (or use "Public Git repository" and paste your repo URL)
-4. Select the repository: `office-management-app`
+### Backend — Render
 
-**Step 3: Configure the Service**
-- **Name**: `office-management-backend` (or any name you prefer)
-- **Environment**: `Node`
-- **Region**: Choose the closest region to you
-- **Branch**: `main` (or your default branch)
-- **Root Directory**: `backend`
-- **Build Command**: `npm install`
-- **Start Command**: `npm start`
+1. Sign up at [render.com](https://render.com) (e.g. with GitHub).
+2. **New +** → **Web Service** → connect `office-management-app` repo.
+3. Use:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. Create the service. Render sets `PORT` automatically.
+5. Note the URL (e.g. `https://office-management-app.onrender.com`).
 
-**Step 4: Environment Variables**
-- No environment variables are required for basic setup
-- Render will automatically set the `PORT` environment variable
+**Note:** Free tier spins down after ~15 minutes of inactivity; the first request after that can take 30–60 seconds.
 
-**Step 5: Deploy**
-1. Click "Create Web Service"
-2. Render will start building and deploying your backend
-3. Wait for the deployment to complete (usually 2-3 minutes)
-4. Once deployed, you'll get a URL like: `https://your-app-name.onrender.com`
+### Frontend — Netlify
 
-**Step 6: Update Frontend Configuration**
-1. Copy your Render backend URL
-2. Update `src/config/api.js` and replace `'https://your-app.onrender.com'` with your actual Render URL
-3. Or create a `.env` file in the root directory:
-   ```
-   VUE_APP_API_URL=https://your-app-name.onrender.com
-   ```
+1. Sign up at [netlify.com](https://netlify.com) (e.g. with GitHub).
+2. **Add new site** → **Import an existing project** → choose the repo.
+3. Use:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. (Optional) Add env: `VUE_APP_API_URL` = your Render URL.
+5. Deploy.
 
-**Important Notes:**
-- Render's free tier spins down after 15 minutes of inactivity. The first request after spin-down may take 30-60 seconds to respond.
-- For production, consider upgrading to a paid plan for always-on service.
-- The `db.json` file will persist data, but it's stored in the filesystem. For production, consider using a proper database.
+`src/config/api.js` is already set to use the Render URL in production, so the app will work once both are deployed.
 
-#### Frontend Deployment
-The application frontend is deployed on Netlify. You can access the live version at:
+---
 
-### https://office-management-app-ricardo-moses.netlify.app
+## Project Structure
+
+```
+office-management-app/
+├── backend/           # JSON Server API
+│   ├── db.json
+│   ├── server.js
+│   └── package.json
+├── public/
+├── src/
+│   ├── config/        # API URL (api.js)
+│   ├── components/
+│   ├── views/
+│   ├── store/
+│   └── router/
+├── package.json
+└── README.md
+```
+
+---
+
+## API
+
+- `GET /offices` — list offices
+- `POST /offices` — create office
+- `GET /offices/:id` — get office
+- `PUT /offices/:id` — update office
+- `DELETE /offices/:id` — delete office
+- `GET /workers` — list workers
+- `POST /workers` — create worker
+- `GET /workers/:id` — get worker
+- `PUT /workers/:id` — update worker
+- `DELETE /workers/:id` — delete worker
+
+---
+
+## License
+
+MIT
